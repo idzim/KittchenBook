@@ -1,0 +1,21 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+*.tsbuildinfo
+
+# .env file containing sensitive credentials
+.env
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# TypeScript build output
+*.js
+*.js.map
+
+# Logs
+logs/
+*.log
