@@ -53,3 +53,7 @@ Backend będzie łączyć się z lokalnym SQL Serverem i uruchomi aplikację.
 Frontend powinien być dostępny pod adresem:
 http://localhost:8080.   
 
+## 5. TO DO
+    * opisać sposób łączenia się z bazą (TypeORM)
+    * opisać .env
+    * 
