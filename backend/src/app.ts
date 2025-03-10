@@ -9,6 +9,11 @@ app.use(express.json());
 // Połączenie z bazą danych
 connectDB();
 
+// Endpoint testowy dla głównej ścieżki
+app.get('/', (req: Request, res: Response) => {
+  res.send('Witaj w KitchenBook API!');
+});
+
 // Przykładowy endpoint GET
 app.get('/recipes', async (req: Request, res: Response) => {
   try {

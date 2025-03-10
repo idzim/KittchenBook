@@ -8,7 +8,7 @@ Aby uruchomić bazę danych w projekcie, potrzebujesz zainstalowanego **SQL Serv
 1. Pobierz i zainstaluj **SQL Server Express** z [oficjalnej strony Microsoft](https://www.microsoft.com/pl-pl/sql-server/sql-server-downloads).
 2. Podczas instalacji wybierz **Basic** (najprostsza opcja), która zainstaluje SQL Server bez dodatkowych narzędzi.
 3. Upewnij się, że port 1433 jest dostępny w firewallu i używasz **autentykacji SQL** (a nie tylko Windows).
-4. Po zakończeniu instalacji możesz otworzyć **SQL Server Management Studio (SSMS)** i połączyć się z bazą danych za pomocą `localhost\SQLEXPRESS`.
+4. Po zakończeniu instalacji możesz otworzyć **SQL Server Management Studio (SSMS)** i połączyć się z bazą danych za pomocą `localhost\SQLEXPRESS` lub jak tam nazwałeś swojego sql'a.
 
 ### Instalacja SQL Server na systemie Linux:
 Postępuj zgodnie z instrukcjami na stronie: [SQL Server dla Linux](https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-setup?view=sql-server-ver15).
@@ -24,6 +24,7 @@ Po zainstalowaniu **SQL Server**, musisz skonfigurować odpowiednią bazę danyc
 1. Zaloguj się do SQL Server z poziomu terminala (lub użyj SSMS):
 
     sqlcmd -S localhost -U sa -P "TwojeHaslo123" -i db/init.sql
+To polecenie odpali spkrypt .sql, w którym zapisana jest 
 
 ### 3. Instalacja Zależności
 Aby uruchomić backend aplikacji, należy zainstalować wymagane zależności.
