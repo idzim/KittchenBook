@@ -57,4 +57,4 @@ http://localhost:8080.
 ## 5. TO DO
     * opisać sposób łączenia się z bazą (TypeORM)
     * opisać .env
-    * 
+    * opisać front
