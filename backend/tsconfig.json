@@ -5,6 +5,7 @@
     "lib": ["es6"],
     "experimentalDecorators": true,  // Włącz dekoratory
     "emitDecoratorMetadata": true,  // Emituj metadane dla dekoratorów
+    "strictPropertyInitialization": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "strict": true,
