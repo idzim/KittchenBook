@@ -55,9 +55,16 @@ Frontend powinien być dostępny pod adresem:
 http://localhost:8080.   
 
 ## 5. Backend - baza danych (TypeORM)
-    Backend łączy się z bazą danych poprzez plik database/connection.ts, dodatkowo do połączenia wykorzystany jest dodatek TypeORM. 
-    Dlaczego? Bo ułatwia zarządzanie bazą (działa to podobnie jak w .net mvc), można zarządzać za pomocą migracji, ale obecnie są wyłaczone. Oznacza to, że wszelkie zmiany na modelach są automatycznie synchronizowane z bazą danych oraz, że tabele tworzą/aktualizują się w momencie odpalenia backendu, zgodnie z entities przekazanymi w database/conntection.ts.
-    TypeORM w połączeniu z TSem w dość prosty sposób pozwala nam tworzyć encje (tabele) i określać relacje, co z kolei pomaga wygodnie ograć te bardziej złożone powiązania.
+    Backend łączy się z bazą danych poprzez plik database/connection.ts,
+    dodatkowo do połączenia wykorzystany jest dodatek TypeORM. 
+    Dlaczego? Bo ułatwia zarządzanie bazą (działa to podobnie jak w .net mvc), 
+    można zarządzać za pomocą migracji, ale obecnie są wyłaczone. 
+    Oznacza to, że wszelkie zmiany na modelach są automatycznie synchronizowane z bazą danych 
+    oraz, że tabele tworzą/aktualizują się w momencie odpalenia backendu, 
+    zgodnie z entities przekazanymi w database/conntection.ts.
+    TypeORM w połączeniu z TSem w dość prosty sposób pozwala nam
+    tworzyć encje (tabele) i określać relacje,
+    co z kolei pomaga wygodnie ograć te bardziej złożone powiązania.
 ### 5.1 Plik .env
     plik do stworzenia lokalnie, bowiem jest dodany do .gitignore
     Treść:
