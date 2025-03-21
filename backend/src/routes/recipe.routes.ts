@@ -1,13 +1,14 @@
+// routes/recipe.routes.ts
 import { Router, Request, Response } from "express";
-import { Recipe } from "../entities/recipe";
-import { AppDataSource } from "../database/connection";
+import { RecipeService } from "../services/recipe.service";
 
 const router = Router();
+const recipeService = new RecipeService();
 
 // Pobranie wszystkich przepisów
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const recipes = await AppDataSource.getRepository(Recipe).find();
+    const recipes = await recipeService.getAllRecipes();
     res.json(recipes);
   } catch (error) {
     res.status(500).json({ error: "Błąd przy pobieraniu przepisów" });
@@ -18,7 +19,7 @@ router.get("/", async (req: Request, res: Response) => {
 router.get("/:id", async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id, 10);
-    const recipe = await AppDataSource.getRepository(Recipe).findOneBy({ id });
+    const recipe = await recipeService.getRecipeById(id);
     if (!recipe) {
       return res.status(404).json({ error: "Przepis nie znaleziony" });
     }
@@ -32,11 +33,7 @@ router.get("/:id", async (req: Request, res: Response) => {
 router.post("/", async (req: Request, res: Response) => {
   try {
     const { name, description, link } = req.body;
-    const recipe = new Recipe();
-    recipe.name = name;
-    recipe.description = description;
-    recipe.link = link;
-    const savedRecipe = await AppDataSource.getRepository(Recipe).save(recipe);
+    const savedRecipe = await recipeService.createRecipe(name, description, link);
     res.status(201).json(savedRecipe);
   } catch (error) {
     res.status(500).json({ error: "Błąd przy tworzeniu przepisu" });
@@ -47,16 +44,8 @@ router.post("/", async (req: Request, res: Response) => {
 router.put("/:id", async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id, 10);
-    const recipeRepo = AppDataSource.getRepository(Recipe);
-    let recipe = await recipeRepo.findOneBy({ id });
-    if (!recipe) {
-      return res.status(404).json({ error: "Przepis nie znaleziony" });
-    }
     const { name, description, link } = req.body;
-    recipe.name = name !== undefined ? name : recipe.name;
-    recipe.description = description !== undefined ? description : recipe.description;
-    recipe.link = link !== undefined ? link : recipe.link;
-    const updatedRecipe = await recipeRepo.save(recipe);
+    const updatedRecipe = await recipeService.updateRecipe(id, name, description, link);
     res.json(updatedRecipe);
   } catch (error) {
     res.status(500).json({ error: "Błąd przy aktualizacji przepisu" });
@@ -67,12 +56,7 @@ router.put("/:id", async (req: Request, res: Response) => {
 router.delete("/:id", async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id, 10);
-    const recipeRepo = AppDataSource.getRepository(Recipe);
-    const recipe = await recipeRepo.findOneBy({ id });
-    if (!recipe) {
-      return res.status(404).json({ error: "Przepis nie znaleziony" });
-    }
-    await recipeRepo.delete(id);
+    await recipeService.deleteRecipe(id);
     res.status(200).json({ message: "Przepis usunięty" });
   } catch (error) {
     res.status(500).json({ error: "Błąd przy usuwaniu przepisu" });

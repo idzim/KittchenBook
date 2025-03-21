@@ -1,38 +1,34 @@
+// routes/user.routes.ts
 import { Router, Request, Response } from "express";
-import { User } from "../entities/user";
-import { AppDataSource } from "../database/connection";
+import { UserService } from "../services/user.service";
 
 const router = Router();
+const userService = new UserService();
 
-// Pobranie wszystkich użytkowników (bez haseł)
+// Pobranie wszystkich użytkowników
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const users = await AppDataSource.getRepository(User).find({
-      select: ["id", "email", "createdAt", "updatedAt"],
-      relations: ["mealPlans", "shoppingLists"],
-    });
+    const users = await userService.getAllUsers();
     res.json(users);
   } catch (error) {
-    res.status(500).json({ error: "Błąd przy pobieraniu użytkowników" });
+    const message = error instanceof Error ? error.message : "Błąd przy pobieraniu użytkowników";
+    res.status(500).json({ error: message });
   }
 });
 
-// Pobranie użytkownika po ID (bez hasła)
+// Pobranie użytkownika po ID
 router.get("/:id", async (req: Request, res: Response) => {
   try {
-    const id = parseInt(req.params.id, 10);
-    const user = await AppDataSource.getRepository(User).findOne({
-      where: { id },
-      select: ["id", "email", "createdAt", "updatedAt"],
-      relations: ["mealPlans", "shoppingLists"],
-    });
+    const id = Number(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ error: "Nieprawidłowe ID" });
 
-    if (!user) {
-      return res.status(404).json({ error: "Użytkownik nie został znaleziony" });
-    }
+    const user = await userService.getUserById(id);
+    if (!user) return res.status(404).json({ error: "Użytkownik nie został znaleziony" });
+
     res.json(user);
   } catch (error) {
-    res.status(500).json({ error: "Błąd przy pobieraniu użytkownika" });
+    const message = error instanceof Error ? error.message : "Błąd przy pobieraniu użytkownika";
+    res.status(500).json({ error: message });
   }
 });
 
@@ -40,72 +36,54 @@ router.get("/:id", async (req: Request, res: Response) => {
 router.post("/", async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ error: "Email i hasło są wymagane" });
 
-    if (!email || !password) {
-      return res.status(400).json({ error: "Email i hasło są wymagane" });
-    }
-
-    const userRepo = AppDataSource.getRepository(User);
-
-    // Sprawdzenie, czy użytkownik o podanym emailu już istnieje
-    const existingUser = await userRepo.findOneBy({ email });
-    if (existingUser) {
-      return res.status(400).json({ error: "Użytkownik o podanym emailu już istnieje" });
-    }
-
-    const user = new User();
-    user.email = email;
-    user.password = password; // W produkcji powinieneś hashować hasło przed zapisaniem!
-    const savedUser = await userRepo.save(user);
-
+    const newUser = await userService.createUser(email, password);
     res.status(201).json({
-      id: savedUser.id,
-      email: savedUser.email,
-      createdAt: savedUser.createdAt,
+      id: newUser.id,
+      email: newUser.email,
+      createdAt: newUser.createdAt,
     });
   } catch (error) {
-    res.status(500).json({ error: "Błąd przy tworzeniu użytkownika" });
+    const message = error instanceof Error ? error.message : "Błąd przy tworzeniu użytkownika";
+    res.status(500).json({ error: message });
   }
 });
 
 // Aktualizacja użytkownika
 router.put("/:id", async (req: Request, res: Response) => {
   try {
-    const id = parseInt(req.params.id, 10);
-    const userRepo = AppDataSource.getRepository(User);
-    let user = await userRepo.findOneBy({ id });
-
-    if (!user) {
-      return res.status(404).json({ error: "Użytkownik nie został znaleziony" });
-    }
+    const id = Number(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ error: "Nieprawidłowe ID" });
 
     const { email, password } = req.body;
-    user.email = email !== undefined ? email : user.email;
-    user.password = password !== undefined ? password : user.password; // W produkcji powinieneś hashować hasło
+    const updatedUser = await userService.updateUser(id, email, password);
+    if (!updatedUser) return res.status(404).json({ error: "Użytkownik nie został znaleziony" });
 
-    const updatedUser = await userRepo.save(user);
     res.json({ id: updatedUser.id, email: updatedUser.email, updatedAt: updatedUser.updatedAt });
   } catch (error) {
-    res.status(500).json({ error: "Błąd przy aktualizacji użytkownika" });
+    const message = error instanceof Error ? error.message : "Błąd przy aktualizacji użytkownika";
+    res.status(500).json({ error: message });
   }
 });
 
 // Usunięcie użytkownika
 router.delete("/:id", async (req: Request, res: Response) => {
   try {
-    const id = parseInt(req.params.id, 10);
-    const userRepo = AppDataSource.getRepository(User);
-    const user = await userRepo.findOneBy({ id });
+    const id = Number(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ error: "Nieprawidłowe ID" });
 
-    if (!user) {
-      return res.status(404).json({ error: "Użytkownik nie został znaleziony" });
-    }
+    // Sprawdzenie, czy użytkownik istnieje przed usunięciem
+    const user = await userService.getUserById(id);
+    if (!user) return res.status(404).json({ error: "Użytkownik nie został znaleziony" });
 
-    await userRepo.delete(id);
-    res.status(200).json({ message: "Przepis usunięty" });
+    // Usunięcie użytkownika
+    await userService.deleteUser(id);
+    
+    res.status(200).json({ message: "Użytkownik usunięty" });
   } catch (error) {
-    res.status(500).json({ error: "Błąd przy usuwaniu użytkownika" });
+    const message = error instanceof Error ? error.message : "Błąd przy usuwaniu użytkownika";
+    res.status(500).json({ error: message });
   }
 });
-
 export default router;
