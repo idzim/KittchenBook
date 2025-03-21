@@ -79,7 +79,7 @@ router.delete("/:id", async (req: Request, res: Response) => {
     }
 
     await shoppingListRepo.delete(id);
-    res.status(204).send();
+    res.status(200).json({ message: "Przepis usunięty" });
   } catch (error) {
     res.status(500).json({ error: "Błąd przy usuwaniu listy zakupów" });
   }

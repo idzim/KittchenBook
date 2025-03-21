@@ -74,7 +74,7 @@ router.delete("/:id", async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Plan posiłków nie znaleziony" });
     }
     await mealPlanRepo.delete(id);
-    res.status(204).send();
+    res.status(200).json({ message: "Przepis usunięty" });
   } catch (error) {
     res.status(500).json({ error: "Błąd przy usuwaniu planu posiłków" });
   }
