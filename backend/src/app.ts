@@ -1,46 +1,39 @@
-import 'reflect-metadata';
-import express, { Request, Response } from 'express';
-import { connectDB } from './database/connection';
-import { Recipe } from './entities/recipe';
+import express, { Request, Response } from "express";
+import { AppDataSource } from "./database/connection";
+import recipeRoutes from "./routes/recipe.routes";
+import shoppingListRoutes from "./routes/shoppingList.routes";
+import mealPlanRoutes from "./routes/mealplan.routes";
+import mealPlanRecipeRoutes from "./routes/mealplanRecipe.routes";
+import userRoutes from "./routes/user.routes";
 
 const app = express();
+
+// Middleware do parsowania JSON
 app.use(express.json());
 
-// Połączenie z bazą danych
-connectDB();
+// Inicjalizacja połączenia z bazą danych
+AppDataSource.initialize()
+  .then(() => {
+    console.log("Data Source has been initialized!");
 
-// Endpoint testowy dla głównej ścieżki
-app.get('/', (req: Request, res: Response) => {
-  res.send('Witaj w KitchenBook API!');
-});
+    // Rejestracja tras
+    app.use("/recipes", recipeRoutes);
+    app.use("/shopping-lists", shoppingListRoutes);
+    app.use("/mealplans", mealPlanRoutes);
+    app.use("/mealplan-recipes", mealPlanRecipeRoutes);
+    app.use("/users", userRoutes);
 
-// Przykładowy endpoint GET
-app.get('/recipes', async (req: Request, res: Response) => {
-  try {
-    const recipes = await Recipe.find();
-    res.json(recipes);
-  } catch (error) {
-    res.status(500).json({ message: 'Błąd serwera', error });
-  }
-});
+    // Opcjonalnie – przykładowy endpoint główny
+    app.get("/", (req: Request, res: Response) => {
+      res.send("Witamy w API przepisów!");
+    });
 
-// Przykładowy endpoint POST
-app.post('/recipes', async (req: Request, res: Response) => {
-  try {
-    const { name, description, category } = req.body;
-    const recipe = new Recipe();
-    recipe.name = name;
-    recipe.description = description;
-    recipe.category = category;
-    await recipe.save();
-    res.status(201).json(recipe);
-  } catch (error) {
-    res.status(500).json({ message: 'Błąd przy dodawaniu przepisu', error });
-  }
-});
-
-// Ustawienie portu serwera
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Serwer działa na porcie ${PORT}`);
-});
+    // Uruchomienie serwera
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(`Serwer działa na porcie ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Błąd przy inicjalizacji Data Source:", err);
+  });

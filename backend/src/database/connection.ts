@@ -5,6 +5,7 @@ import { Recipe } from '../entities/recipe';
 import { MealPlan } from '../entities/mealplan';
 import { MealPlanRecipe } from '../entities/mealplanRecipe';
 import { ShoppingList } from '../entities/shoppingList';
+import { RecipeIngredient } from '../entities/recipeIngredient';
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME,
   synchronize: true,
   logging: true,
-  entities: [User, Recipe, MealPlan, MealPlanRecipe, ShoppingList],
+  entities: [User, Recipe, MealPlan, MealPlanRecipe, ShoppingList, RecipeIngredient],
   extra: {
     trustServerCertificate: true,
     encrypt: false,
