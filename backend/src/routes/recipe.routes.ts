@@ -63,4 +63,13 @@ router.delete("/:id", async (req: Request, res: Response) => {
   }
 });
 
+router.post("/filter", async (req: Request, res: Response) => {
+  try {
+    const recipes = await recipeService.filterRecipes(req.body);
+    res.json(recipes);
+  } catch (error) {
+    res.status(500).json({ error: "Błąd przy filtrowaniu przepisów" });
+  }
+});
+
 export default router;
