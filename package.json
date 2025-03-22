@@ -1,0 +1,15 @@
+{
+  "name": "kitchen-book",
+  "version": "1.0.0",
+  "scripts": {
+    "lint": "eslint 'frontend/**/*.js' 'backend/**/*.ts'",
+    "lint:fix": "eslint 'frontend/**/*.js' 'backend/**/*.ts' --fix",
+    "format": "prettier --write 'frontend/**/*.{js,ts}' 'backend/**/*.{js,ts}'"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.2",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0"
+  }
+}
