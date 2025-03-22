@@ -76,3 +76,10 @@ http://localhost:8080.
 
 ## 6. TO DO
     * opisać front
+    * zacząć robić front
+    * opisać architekturę backendu entities-service-routes
+    * dodać eslint i prettier
+    * dodać Jest do testów backendu (lub coś innego)
+    * zacząć pisać testy jednostkowe
+    * napisać testy API (bruno? playwright? coś innego?)
+    
