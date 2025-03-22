@@ -1,18 +1,18 @@
 // services/shoppingList.service.ts
-import { AppDataSource } from "../database/connection";
-import { ShoppingList } from "../entities/shoppingList";
+import { AppDataSource } from '../database/connection';
+import { ShoppingList } from '../entities/shoppingList';
 
 export class ShoppingListService {
   private shoppingListRepo = AppDataSource.getRepository(ShoppingList);
 
   // Pobranie wszystkich list zakupów
   async getAllShoppingLists() {
-    return this.shoppingListRepo.find({ relations: ["user"] });
+    return this.shoppingListRepo.find({ relations: ['user'] });
   }
 
   // Pobranie jednej listy zakupów po ID
   async getShoppingListById(id: number) {
-    return this.shoppingListRepo.findOne({ where: { id }, relations: ["user"] });
+    return this.shoppingListRepo.findOne({ where: { id }, relations: ['user'] });
   }
 
   // Tworzenie nowej listy zakupów
@@ -25,7 +25,7 @@ export class ShoppingListService {
   async updateShoppingList(id: number, user?: any, items?: string[]) {
     const shoppingList = await this.shoppingListRepo.findOneBy({ id });
     if (!shoppingList) {
-      throw new Error("Shopping list not found");
+      throw new Error('Shopping list not found');
     }
 
     shoppingList.user = user !== undefined ? user : shoppingList.user;
@@ -38,7 +38,7 @@ export class ShoppingListService {
   async deleteShoppingList(id: number) {
     const shoppingList = await this.shoppingListRepo.findOneBy({ id });
     if (!shoppingList) {
-      throw new Error("Shopping list not found");
+      throw new Error('Shopping list not found');
     }
 
     await this.shoppingListRepo.delete(id);

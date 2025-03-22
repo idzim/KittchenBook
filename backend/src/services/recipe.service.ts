@@ -1,6 +1,6 @@
 // services/recipe.service.ts
-import { AppDataSource } from "../database/connection";
-import { Recipe } from "../entities/recipe";
+import { AppDataSource } from '../database/connection';
+import { Recipe } from '../entities/recipe';
 
 export class RecipeService {
   private recipeRepo = AppDataSource.getRepository(Recipe);
@@ -25,7 +25,7 @@ export class RecipeService {
   async updateRecipe(id: number, name?: string, description?: string, link?: string) {
     const recipe = await this.recipeRepo.findOneBy({ id });
     if (!recipe) {
-      throw new Error("Recipe not found");
+      throw new Error('Recipe not found');
     }
 
     recipe.name = name !== undefined ? name : recipe.name;
@@ -39,25 +39,24 @@ export class RecipeService {
   async deleteRecipe(id: number) {
     const recipe = await this.recipeRepo.findOneBy({ id });
     if (!recipe) {
-      throw new Error("Recipe not found");
+      throw new Error('Recipe not found');
     }
     await this.recipeRepo.delete(id);
   }
   // Filtracja przepisów
   async filterRecipes(filters: { name?: string; category?: string; ingredients?: string[] }) {
     const query = AppDataSource.getRepository(Recipe)
-      .createQueryBuilder("recipe")
-      .leftJoinAndSelect("recipe.ingredients", "ingredient");
+      .createQueryBuilder('recipe')
+      .leftJoinAndSelect('recipe.ingredients', 'ingredient');
 
     if (filters.name) {
-      query.andWhere("recipe.name LIKE :name", { name: `%${filters.name}%` });
+      query.andWhere('recipe.name LIKE :name', { name: `%${filters.name}%` });
     }
 
     if (filters.ingredients && filters.ingredients.length > 0) {
-      query.andWhere("ingredient.name IN (:...ingredients)", { ingredients: filters.ingredients });
+      query.andWhere('ingredient.name IN (:...ingredients)', { ingredients: filters.ingredients });
     }
 
     return await query.getMany();
-
   }
 }

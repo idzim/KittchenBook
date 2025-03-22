@@ -1,6 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { MealPlan } from "./mealplan";
-import { ShoppingList } from "./shoppingList";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { MealPlan } from './mealplan';
+import { ShoppingList } from './shoppingList';
 
 @Entity()
 export class User {

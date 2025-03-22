@@ -1,19 +1,25 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { MealPlanRecipe } from "./mealplanRecipe";
-import { RecipeIngredient } from "./recipeIngredient";
-
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { MealPlanRecipe } from './mealplanRecipe';
+import { RecipeIngredient } from './recipeIngredient';
 
 @Entity()
 export class Recipe {
   @PrimaryGeneratedColumn()
   id!: number;
-  
+
   @CreateDateColumn()
   createdAt!: Date;
 
   @UpdateDateColumn()
   updatedAt!: Date;
-  
+
   @Column()
   name!: string;
 
@@ -26,8 +32,6 @@ export class Recipe {
   @OneToMany(() => RecipeIngredient, (ingredient) => ingredient.recipe, { cascade: true })
   ingredients!: RecipeIngredient[];
 
-
   @OneToMany(() => MealPlanRecipe, (mealPlanRecipe) => mealPlanRecipe.recipe)
   mealPlanRecipes!: MealPlanRecipe[];
-
 }
