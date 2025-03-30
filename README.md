@@ -86,7 +86,11 @@ http://localhost:8080.
     DB_PASSWORD= Password123! //haslo zgodne z haslem podanym w init.db, można sobie dowolnie zmieniac
     DB_NAME=KitchenBookDB
 
-## 6. TO DO
+## 6. Zarys dokumentacji wraz progressem
+
+[Dokumentacja](zarysDOKUMENTACJI.md)
+
+## 7. TO DO
 
     * opisać front
     * zacząć robić front
