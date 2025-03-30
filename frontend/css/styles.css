@@ -1,30 +1,34 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8f8f8;
+    background-color: #f8e5c0;
     color: #333;
 }
 
 header {
-    background-color: #ff6347;
+    background-color: #ff8c42;
     color: white;
     text-align: center;
-    padding: 20px;
+    padding: 10px 0; /* Mniejszy padding w nagłówku */
 }
 
 nav {
-    background-color: #333;
+    background-color: #d9643a;
     text-align: center;
-    padding: 10px;
+    padding: 5px 0; /* Mniejszy padding w nawigacji */
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0; /* Resetowanie marginesów */
 }
 
 nav ul {
     list-style: none;
     padding: 0;
+    margin: 0; /* Resetowanie marginesów */
 }
 
 nav ul li {
     display: inline;
-    margin: 0 15px;
+    margin: 0 10px; /* Zmniejszenie marginesów między elementami */
 }
 
 nav ul li a {
@@ -38,19 +42,22 @@ main {
 }
 
 footer {
-    background-color: #333;
+    background-color: #ff6347;
     color: white;
     text-align: center;
-    padding: 10px;
-    position: fixed;
-    bottom: 0;
+    padding: 5px 0; /* Mniejszy padding w stopce */
     width: 100%;
+    position: relative;
+    bottom: 0;
+    margin-top: 0; /* Usunięcie marginesu górnego */
+    font-size: 0.9rem; /* Mniejsza czcionka, aby stopka była mniej przestronna */
 }
 
+
 .logo img {
-    max-width: 150px; /* Ograniczenie szerokości */
-    max-height: 80px; /* Ograniczenie wysokości */
-    height: auto; /* Zachowanie proporcji */
+    max-width: 150px;
+    max-height: 80px;
+    height: auto;
     width: auto;
     display: block;
 }
@@ -59,6 +66,89 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px; /* Odstęp między elementami */
+    gap: 10px;
     padding: 10px;
+}
+
+.container {
+    background-color: #fae1c2;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.day-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.day-tile {
+    background-color: #fff5e1;
+    color: #333;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    text-align: center;
+    width: 100%;
+    max-width: 300px;
+}
+
+.day-tile:hover {
+    background-color: #ffd8a8;
+}
+
+.meals {
+    margin-top: 10px;
+}
+
+.meal-tile {
+    background-color: #ffd8a8;
+    color: #333;
+    border-left: 5px solid #ff8c42;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.meal-recipe {
+    color: #d9643a;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.meal-recipe:hover {
+    text-decoration: underline;
+}
+
+.add-recipe select {
+    width: 100%;
+    padding: 10px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Opcjonalnie, dodaj responsywność w przypadku zbyt dużych elementów */
+@media (max-width: 768px) {
+    nav ul li {
+        margin: 0 8px;
+    }
+
+    .logo img {
+        max-width: 120px; /* Dostosuj rozmiar logo na mniejszych ekranach */
+    }
 }

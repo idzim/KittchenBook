@@ -1,89 +1,74 @@
-import { Router, Request, Response } from "express";
-import { MealPlanRecipe } from "../entities/mealplanRecipe";
-import { AppDataSource } from "../database/connection";
+// routes/mealplanRecipe.routes.ts
+import { Router, Request, Response } from 'express';
+import { MealPlanRecipeService } from '../services/mealplanRecipe.service';
 
 const router = Router();
+const mealPlanRecipeService = new MealPlanRecipeService();
 
 // Pobranie wszystkich przypisanych przepisów do planów posiłków
-router.get("/", async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
-    const mealPlanRecipes = await AppDataSource.getRepository(MealPlanRecipe).find({ relations: ["mealPlan", "recipe"] });
+    const mealPlanRecipes = await mealPlanRecipeService.getAllMealPlanRecipes();
     res.json(mealPlanRecipes);
   } catch (error) {
-    res.status(500).json({ error: "Błąd przy pobieraniu listy przypisanych przepisów" });
+    res.status(500).json({ error: 'Błąd przy pobieraniu listy przypisanych przepisów' });
   }
 });
 
 // Pobranie pojedynczego przypisania po ID
-router.get("/:id", async (req: Request, res: Response) => {
+router.get('/:id', async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id, 10);
-    const mealPlanRecipe = await AppDataSource.getRepository(MealPlanRecipe).findOne({
-      where: { id },
-      relations: ["mealPlan", "recipe"],
-    });
+    const mealPlanRecipe = await mealPlanRecipeService.getMealPlanRecipeById(id);
     if (!mealPlanRecipe) {
-      return res.status(404).json({ error: "Nie znaleziono przypisanego przepisu" });
+      return res.status(404).json({ error: 'Nie znaleziono przypisanego przepisu' });
     }
     res.json(mealPlanRecipe);
   } catch (error) {
-    res.status(500).json({ error: "Błąd przy pobieraniu przypisanego przepisu" });
+    res.status(500).json({ error: 'Błąd przy pobieraniu przypisanego przepisu' });
   }
 });
 
 // Dodanie nowego przypisania przepisu do planu posiłków
-router.post("/", async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
   try {
     const { mealPlan, recipe, mealType } = req.body;
-    const mealPlanRecipe = new MealPlanRecipe();
-    mealPlanRecipe.mealPlan = mealPlan;
-    mealPlanRecipe.recipe = recipe;
-    mealPlanRecipe.mealType = mealType;
-    const savedMealPlanRecipe = await AppDataSource.getRepository(MealPlanRecipe).save(mealPlanRecipe);
+    const savedMealPlanRecipe = await mealPlanRecipeService.createMealPlanRecipe(
+      mealPlan,
+      recipe,
+      mealType,
+    );
     res.status(201).json(savedMealPlanRecipe);
   } catch (error) {
-    res.status(500).json({ error: "Błąd przy dodawaniu przypisanego przepisu" });
+    res.status(500).json({ error: 'Błąd przy dodawaniu przypisanego przepisu' });
   }
 });
 
 // Aktualizacja przypisania przepisu do planu posiłków
-router.put("/:id", async (req: Request, res: Response) => {
+router.put('/:id', async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id, 10);
-    const mealPlanRecipeRepo = AppDataSource.getRepository(MealPlanRecipe);
-    let mealPlanRecipe = await mealPlanRecipeRepo.findOneBy({ id });
-
-    if (!mealPlanRecipe) {
-      return res.status(404).json({ error: "Nie znaleziono przypisanego przepisu" });
-    }
-
     const { mealPlan, recipe, mealType } = req.body;
-    mealPlanRecipe.mealPlan = mealPlan !== undefined ? mealPlan : mealPlanRecipe.mealPlan;
-    mealPlanRecipe.recipe = recipe !== undefined ? recipe : mealPlanRecipe.recipe;
-    mealPlanRecipe.mealType = mealType !== undefined ? mealType : mealPlanRecipe.mealType;
-
-    const updatedMealPlanRecipe = await mealPlanRecipeRepo.save(mealPlanRecipe);
+    const updatedMealPlanRecipe = await mealPlanRecipeService.updateMealPlanRecipe(
+      id,
+      mealPlan,
+      recipe,
+      mealType,
+    );
     res.json(updatedMealPlanRecipe);
   } catch (error) {
-    res.status(500).json({ error: "Błąd przy aktualizacji przypisanego przepisu" });
+    res.status(500).json({ error: 'Błąd przy aktualizacji przypisanego przepisu' });
   }
 });
 
 // Usunięcie przypisania przepisu do planu posiłków
-router.delete("/:id", async (req: Request, res: Response) => {
+router.delete('/:id', async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id, 10);
-    const mealPlanRecipeRepo = AppDataSource.getRepository(MealPlanRecipe);
-    const mealPlanRecipe = await mealPlanRecipeRepo.findOneBy({ id });
-
-    if (!mealPlanRecipe) {
-      return res.status(404).json({ error: "Nie znaleziono przypisanego przepisu" });
-    }
-
-    await mealPlanRecipeRepo.delete(id);
-    res.status(204).send();
+    await mealPlanRecipeService.deleteMealPlanRecipe(id);
+    res.status(200).json({ message: 'Przepis usunięty' });
   } catch (error) {
-    res.status(500).json({ error: "Błąd przy usuwaniu przypisanego przepisu" });
+    res.status(500).json({ error: 'Błąd przy usuwaniu przypisanego przepisu' });
   }
 });
 

@@ -4,6 +4,7 @@ npm-debug.log
 yarn-error.log
 dist/
 *.tsbuildinfo
+API Collection/
 
 # .env file containing sensitive credentials
 .env

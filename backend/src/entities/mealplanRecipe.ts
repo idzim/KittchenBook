@@ -1,22 +1,30 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { MealPlan } from "./mealplan";
-import { Recipe } from "./recipe";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { MealPlan } from './mealplan';
+import { Recipe } from './recipe';
 
 @Entity()
 export class MealPlanRecipe {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => MealPlan, (mealPlan) => mealPlan.mealPlanRecipes, { onDelete: "CASCADE" })
+  @ManyToOne(() => MealPlan, (mealPlan) => mealPlan.mealPlanRecipes, { onDelete: 'CASCADE' })
   @JoinColumn()
   mealPlan: MealPlan;
 
-  @ManyToOne(() => Recipe, (recipe) => recipe.mealPlanRecipes, { onDelete: "CASCADE" })
+  @ManyToOne(() => Recipe, (recipe) => recipe.mealPlanRecipes, { onDelete: 'CASCADE' })
   @JoinColumn()
   recipe: Recipe;
 
   @Column()
-  mealType: "breakfast" | "lunch" | "dinner"; // Śniadanie, obiad, kolacja
+  mealType: 'breakfast' | 'lunch' | 'dinner'; // Śniadanie, obiad, kolacja
 
   @CreateDateColumn()
   createdAt: Date;

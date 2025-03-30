@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { Recipe } from "./recipe";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Recipe } from './recipe';
 
 @Entity()
 export class RecipeIngredient {
@@ -9,6 +9,6 @@ export class RecipeIngredient {
   @Column()
   name!: string; // Nazwa składnika
 
-  @ManyToOne(() => Recipe, (recipe) => recipe.ingredients, { onDelete: "CASCADE" })
+  @ManyToOne(() => Recipe, (recipe) => recipe.ingredients, { onDelete: 'CASCADE' })
   recipe!: Recipe;
 }

@@ -1,16 +1,24 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { User } from "./user";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { User } from './user';
 
 @Entity()
 export class ShoppingList {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.shoppingLists, { onDelete: "CASCADE" })
+  @ManyToOne(() => User, (user) => user.shoppingLists, { onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
 
-  @Column("simple-array")
+  @Column('simple-array')
   items: string[]; // Lista zakupów w formie prostego arraya
 
   @CreateDateColumn()
