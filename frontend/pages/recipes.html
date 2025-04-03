@@ -13,6 +13,29 @@
     <main>
         <h2>Lista Przepisów</h2>
         <ul id="recipe-list"></ul>
+
+        <!-- Przycisk do dodania nowego przepisu -->
+        <button id="show-form" class="btn btn-primary">Dodaj Przepis</button>
+
+        <!-- Formularz do dodania nowego przepisu (domyślnie ukryty) -->
+        <div id="recipe-form" style="display: none;">
+            <h3>Dodaj nowy przepis</h3>
+            <form id="add-recipe-form">
+                <div class="mb-3">
+                    <label for="recipe-name" class="form-label">Nazwa przepisu</label>
+                    <input type="text" class="form-control" id="recipe-name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="recipe-description" class="form-label">Opis przepisu</label>
+                    <textarea class="form-control" id="recipe-description" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="recipe-link" class="form-label">Link do przepisu</label>
+                    <input type="url" class="form-control" id="recipe-link" required>
+                </div>
+                <button type="submit" class="btn btn-success">Zapisz przepis</button>
+            </form>
+        </div>
     </main>
 
     <script type="module" src="../js/main.js" defer></script> <!-- Zmieniamy tutaj -->
