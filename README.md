@@ -45,7 +45,8 @@ Aby uruchomić backend aplikacji, należy zainstalować wymagane zależności.
 ### 4.1. Uruchomienie backendu
 
 Aby uruchomić backend aplikacji:
-npm run start:dev
+cd backend
+npm start
 
 Serwer backendu uruchomi się na porcie 3000 domyślnie. Możesz teraz sprawdzić, czy aplikacja działa, odwiedzając:
 http://localhost:3000.
@@ -54,14 +55,10 @@ Backend będzie łączyć się z lokalnym SQL Serverem i uruchomi aplikację.
 
 ### 4.2 Uruchomienie frontendu
 
-1. Instalacja http-server:
-   cd ../frontend
-   npm install -g http-server
-2. Uruchom forntend:
-   http-server ./ -p 8080
+Frontend jest obsługiwany przez server ExpressJS. Dzięki temu nie musimy robić nic dodatkowego oraz korzystać z dodatkowej obsługi fronendu czoy CORS do obsługi innych portów. Frontend i api są na tym samym porcie, co ułatwia pracę.
 
-Frontend powinien być dostępny pod adresem:
-http://localhost:8080.
+Po uruchomieniu projektu, frontend będzie dostępny pod adresem:
+http://localhost:3000/index.html
 
 ## 5. Backend - baza danych (TypeORM)
 
