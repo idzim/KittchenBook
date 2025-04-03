@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import path from 'path';
 import { AppDataSource } from './database/connection';
 import recipeRoutes from './routes/recipe.routes';
 import shoppingListRoutes from './routes/shoppingList.routes';
@@ -11,17 +12,20 @@ const app = express();
 // Middleware do parsowania JSON
 app.use(express.json());
 
+// Serwowanie plików statycznych z folderu frontend
+app.use(express.static(path.join(__dirname, '../../frontend')));
+
 // Inicjalizacja połączenia z bazą danych
 AppDataSource.initialize()
   .then(() => {
     console.log('Data Source has been initialized!');
 
-    // Rejestracja tras
-    app.use('/recipes', recipeRoutes);
-    app.use('/shopping-lists', shoppingListRoutes);
-    app.use('/mealplans', mealPlanRoutes);
-    app.use('/mealplan-recipes', mealPlanRecipeRoutes);
-    app.use('/users', userRoutes);
+    // Rejestracja tras API
+    app.use('/api/recipes', recipeRoutes); // zmieniłem ścieżkę do '/api/recipes', aby odróżnić API od frontendowych plików
+    app.use('/api/shopping-lists', shoppingListRoutes);
+    app.use('/api/mealplans', mealPlanRoutes);
+    app.use('/api/mealplan-recipes', mealPlanRecipeRoutes);
+    app.use('/api/users', userRoutes);
 
     // Opcjonalnie – przykładowy endpoint główny
     app.get('/', (req: Request, res: Response) => {
