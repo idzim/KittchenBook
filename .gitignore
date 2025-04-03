@@ -14,7 +14,6 @@ API Collection/
 Thumbs.db
 
 # TypeScript build output
-*.js
 *.js.map
 
 # Logs
