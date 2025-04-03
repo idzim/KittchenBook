@@ -32,6 +32,19 @@ Jako użytkownik chcę mieć możliwość dynamicznego uzupełniania planu posi�
 
 Jako użytkownik chcę generować listę zakupów na podstawie wybranego przepisu/planu posiłków, aby ułatwić sobie zakupy.
 
+//Opcjonalne
+### 1.2.7 Archiwum planów posiłków
+
+Jako użytkownik chcę mieć możliwość przeglądania archwiawalnych planów posiłków, chcę je sortować i wyświetlać w wybranej kombinacji.
+
+### 1.2.8 Zapisane listy zakupów
+
+Jako użytkownik chcę mieć możliwość zarządzanie wieloma listami zakupów. Chcę to mieć w formie zakładki, dostępnej z menu głównego, gdzie mogę przeglądać, edytować i zapisywać listy wygenerowane w innych miejscach aplikacji. Chciałbym móc zmienić nazwę oraz zawartość. Może dodać jakieś kolorowe oznaczenia.
+
+### 1.2.9 Zapisanie listy zakupów do pliku
+
+Jako użytkownik chciałbym móc zapisać listę zakupów do pliku, w kilku formatach (domyślnie .txt). Taką możliwość chcę mieć z panelu szczegółów przepisu (lista z danego przepisu), planu posiłków (lista o zadanych zakresie) oraz z zakładki zapisane listy zakupów (o ile istnieje).
+
 ## 1.3 Wskazanie co najmniej dwóch odbiorców systemu
 
 ### 1.3.1 Osoby gotujące w domu
