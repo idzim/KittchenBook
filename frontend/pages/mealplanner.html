@@ -4,27 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planer Posiłków | KitchenBook</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/reset.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/styles.css">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="../assets/logo.png" alt="KittchenBook Logo">
-            <h1>Planer Posiłków</h1>
-        </div>
-    </header>
-
-    <nav>
-        <ul>
-            <li><a href="../index.html">Strona Główna</a></li>
-            <li><a href="recipes.html">Przepisy</a></li>
-            <li><a href="mealplanner.html">Planer Posiłków</a></li>
-            <li><a href="about.html">O nas</a></li>
-        </ul>
-    </nav>
 
     <main>
         <div class="container">
@@ -38,10 +23,9 @@
             <div class="day-list" id="day-list"></div>
         </div>
     </main>
-    
-    <footer>
-        <p>&copy; 2024 KittchenBook. Wszelkie prawa zastrzeżone.</p>
-    </footer>
+
+    <!-- Załadowanie main.js, który doda layout (header, nawigacja, footer) -->
+    <script type="module" src="../js/main.js" defer></script>
 
     <script>
         let days = JSON.parse(localStorage.getItem("mealPlan")) || [
@@ -73,7 +57,7 @@
                 dayTile.innerHTML = `
                     <h3>${day.day}</h3>
                     <div class='meals'>
-                        ${day.meals.map(meal => `
+                        ${day.meals.map(meal => ` 
                             <div class='meal-tile'>
                                 <div class='meal-name'>${meal.name}</div>
                                 <a href='${meal.link}' target='_blank' class='meal-recipe'>Zobacz przepis</a>
@@ -112,5 +96,6 @@
 
         renderDays();
     </script>
+
 </body>
 </html>
