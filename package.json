@@ -2,6 +2,7 @@
   "name": "kitchen-book",
   "version": "1.0.0",
   "scripts": {
+    "start": "node backend/src/app.js",  
     "lint": "eslint 'frontend/**/*.js' 'backend/**/*.ts'",
     "lint:fix": "eslint 'frontend/**/*.js' 'backend/**/*.ts' --fix",
     "format": "prettier --write 'frontend/**/*.{js,ts}' 'backend/**/*.{js,ts}'"

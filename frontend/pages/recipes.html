@@ -1,39 +1,75 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Przepisy | KitchenBook</title>
-    <link rel="stylesheet" href="../css/reset.css">
-    <link rel="stylesheet" href="../css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Przepisy | KitchenBook</title>
+  <link rel="stylesheet" href="../css/reset.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
-
+  <main class="container py-4">
     <header>
-        <div class="logo">
-            <img src="../assets/logo.png" alt="KittchenBook Logo">
-            <h1>Przepisy</h1>
-        </div>
+      <h2 class="mb-4">Przepisy</h2>
+      <!-- Przyciski akcji u góry -->
+      <div class="d-flex justify-content-end mb-3">
+        <button id="show-form" class="btn btn-success">Dodaj Przepis</button>
+      </div>
     </header>
 
-    <nav>
-        <ul>
-            <li><a href="../index.html">Strona Główna</a></li>
-            <li><a href="recipes.html">Przepisy</a></li>
-            <li><a href="mealplanner.html">Planer Posiłków</a></li>
-            <li><a href="about.html">O nas</a></li>
-        </ul>
-    </nav>
+    <!-- Ukryty formularz do dodania nowego przepisu -->
+    <section id="recipe-form-section" class="mb-4" style="display: none;">
+      <h3>Dodaj nowy przepis</h3>
+      <form id="add-recipe-form">
+        <div class="mb-3">
+          <label for="recipe-name" class="form-label">Nazwa przepisu</label>
+          <input type="text" class="form-control" id="recipe-name" required>
+        </div>
+        <div class="mb-3">
+          <label for="recipe-description" class="form-label">Opis przepisu</label>
+          <textarea class="form-control" id="recipe-description" required></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="recipe-link" class="form-label">Link do przepisu</label>
+          <input type="url" class="form-control" id="recipe-link" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Zapisz przepis</button>
+      </form>
+    </section>
 
-    <main>
-        <h2>Lista Przepisów</h2>
-        <ul id="recipe-list"></ul>
-    </main>
+    <!-- Belka filtrów -->
+    <section aria-label="Filtry przepisów" class="mb-4">
+      <form id="filter-form">
+        <fieldset class="row g-2">
+          <legend class="visually-hidden">Filtry</legend>
+          <div class="col-md-4">
+            <label for="filter-name" class="form-label">Nazwa przepisu</label>
+            <input type="text" id="filter-name" class="form-control" placeholder="Nazwa przepisu">
+          </div>
+          <div class="col-md-4">
+            <label for="filter-category" class="form-label">Kategoria</label>
+            <input type="text" id="filter-category" class="form-control" placeholder="Kategoria">
+          </div>
+          <div class="col-md-4">
+            <label for="filter-ingredients" class="form-label">Składniki</label>
+            <input type="text" id="filter-ingredients" class="form-control" placeholder="Składniki (oddzielone przecinkami)">
+          </div>
+        </fieldset>
+        <div class="mt-2 text-end">
+          <button type="button" id="search-button" class="btn btn-primary">Szukaj</button>
+        </div>
+      </form>
+    </section>
 
-    <footer>
-        <p>&copy; 2024 KittchenBook. Wszelkie prawa zastrzeżone.</p>
-    </footer>
-    
-    <script src="../js/api.js"></script>
+    <!-- Lista przepisów (jako jednokolumnowa lista kart) -->
+    <section aria-label="Lista przepisów">
+      <ul id="recipe-list" class="list-unstyled">
+        <!-- Dynamiczne elementy listy zostaną wstawione tutaj -->
+      </ul>
+    </section>
+  </main>
+
+  <script type="module" src="../js/main.js" defer></script>
 </body>
 </html>
