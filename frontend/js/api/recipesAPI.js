@@ -83,3 +83,26 @@ export async function updateRecipe(id, updatedRecipeData) {
         throw error;
     }
 }
+
+// Funkcja do filtrowania przepisów
+export async function filterRecipes(filters) {
+    try {
+        const response = await fetch(`${API_URL}/filter`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(filters),
+        });
+
+        if (!response.ok) {
+            throw new Error("Błąd przy filtrowaniu przepisów.");
+        }
+
+        const recipes = await response.json();
+        return recipes;
+    } catch (error) {
+        console.error("Błąd API:", error);
+        throw error;
+    }
+}

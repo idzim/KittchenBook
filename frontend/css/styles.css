@@ -152,3 +152,29 @@ footer {
         max-width: 120px; /* Dostosuj rozmiar logo na mniejszych ekranach */
     }
 }
+
+/* Dodaj nowe reguły dla kart przepisów */
+.recipe-card article {
+    border: 1px solid #ff8c42;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    background-color: #fff5e1;
+  }
+  
+  .recipe-card article:hover {
+    background-color: #ffd8a8;
+  }
+  
+  .card-header,
+  .card-footer {
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+  }
+  
+  .card-footer button,
+  .card-footer a {
+    margin-left: 5px;
+  }
+  
