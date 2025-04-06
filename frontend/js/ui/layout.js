@@ -3,7 +3,7 @@ export function renderLayout(pageTitle = "") {
     header.classList.add("custom-header"); // Dodajemy klasę do stylowania
 
     header.innerHTML = `
-        <nav class="navbar ">
+        <nav class="navbar">
             <div class="container-fluid">
                 <a class="navbar-brand d-flex align-items-center text-white" href="#">
                     <img src="../assets/logo.png" alt="KittchenBook Logo" width="30" height="30" class="me-2">
@@ -33,5 +33,19 @@ export function renderLayout(pageTitle = "") {
     document.body.prepend(header);
     document.body.appendChild(footer);
 
+    // Wywołanie funkcji podświetlającej aktywny link nawigacyjny
     highlightActiveNav();
+}
+
+// Funkcja podświetlająca aktywny link w nawigacji
+function highlightActiveNav() {
+    const navLinks = document.querySelectorAll(".nav-link");
+    const currentPage = window.location.pathname;
+
+    navLinks.forEach(link => {
+        link.classList.remove("active"); // Usuwamy klasę 'active' ze wszystkich linków
+        if (link.getAttribute("href") === currentPage) {
+            link.classList.add("active"); // Dodajemy klasę 'active' do aktywnego linku
+        }
+    });
 }

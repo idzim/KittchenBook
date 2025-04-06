@@ -5,19 +5,19 @@ const API_URL = '/api/recipes';
 // Funkcja do pobierania wszystkich przepisów
 export async function fetchRecipes() {
     try {
-        const response = await fetch(API_URL);
-
-        if (!response.ok) {
-            throw new Error("Błąd przy pobieraniu przepisów.");
-        }
-
-        const recipes = await response.json();
-        return recipes;
+      const response = await fetch('/api/recipes');
+      if (!response.ok) {
+        throw new Error("Nie udało się pobrać przepisów");
+      }
+      const recipes = await response.json();
+      console.log("Przepisy z API:", recipes); // Sprawdzamy, czy zwraca dane
+      return recipes;
     } catch (error) {
-        console.error("Błąd API:", error);
-        throw error; // Przekazujemy błąd dalej
+      console.error("Błąd przy pobieraniu przepisów:", error);
+      throw error;
     }
-}
+  }
+  
 
 // Funkcja do tworzenia nowego przepisu
 export async function createRecipe(recipeData) {

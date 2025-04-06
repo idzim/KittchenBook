@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Renderowanie listy przepisów
     try {
+        // Sprawdzamy, czy lista przepisów jest poprawnie renderowana
         renderRecipeList();
     } catch (error) {
         console.error("Błąd przy renderowaniu listy przepisów:", error);
@@ -15,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Obsługa przycisku do pokazania formularza
     const showFormButton = document.getElementById("show-form");
-    const recipeForm = document.getElementById("recipe-form");
+    const recipeForm = document.getElementById("recipe-form-section");
 
     showFormButton.addEventListener("click", () => {
         recipeForm.style.display = recipeForm.style.display === "none" ? "block" : "none";

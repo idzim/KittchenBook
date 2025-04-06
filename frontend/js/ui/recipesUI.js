@@ -22,15 +22,19 @@ function createRecipeCard(recipe) {
 }
 
 // Funkcja do renderowania listy przepisów; opcjonalnie można przekazać listę (np. po filtrowaniu)
+// Funkcja do renderowania listy przepisów; opcjonalnie można przekazać listę (np. po filtrowaniu)
 export async function renderRecipeList(recipesData) {
   const recipeListElement = document.getElementById("recipe-list");
 
   try {
     // Jeśli nie przekazano listy, pobierz wszystkie przepisy
     if (!recipesData) {
+      console.log("Pobieranie przepisów z API...");
       recipesData = await fetchRecipes();
     }
 
+    console.log("Dane przepisów:", recipesData); // Dodajemy logowanie, aby zobaczyć dane
+    
     if (recipesData && recipesData.length > 0) {
       recipeListElement.innerHTML = recipesData.map(createRecipeCard).join("");
     } else {
@@ -41,6 +45,7 @@ export async function renderRecipeList(recipesData) {
     recipeListElement.innerHTML = "<li><p>Nie udało się pobrać przepisów. Spróbuj ponownie później.</p></li>";
   }
 }
+
 
 // Funkcja do obsługi formularza dodawania nowego przepisu
 export function handleCreateRecipe() {
