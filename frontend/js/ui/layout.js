@@ -1,7 +1,7 @@
 export function renderLayout(pageTitle = "") {
     const header = document.createElement("header");
     header.innerHTML = `
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-light bg-light">
             <div class="container-fluid">
                 <a class="navbar-brand d-flex align-items-center" href="#">
                     <img src="../assets/logo.png" alt="KittchenBook Logo" width="30" height="30" class="d-inline-block align-text-top me-2">
