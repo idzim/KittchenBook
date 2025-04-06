@@ -34,8 +34,8 @@ AppDataSource.initialize()
 
     // Uruchomienie serwera
     const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
-      console.log(`Serwer działa na porcie ${PORT}`);
+    app.listen(3000, '0.0.0.0', () => {
+      console.log(`Serwer działa na porcie http://0.0.0.0:${PORT}`);
     });
   })
   .catch((err) => {
