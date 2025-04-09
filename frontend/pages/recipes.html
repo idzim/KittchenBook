@@ -9,30 +9,67 @@
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link rel="stylesheet" href="../css/styles.css">
-  <!-- Dodajemy styl, aby ukryć strzałkę dropdowna dla przycisku three dots -->
+  <style>
+    /* Ukrywanie domyślnej strzałki w przycisku three dots */
+    .btn-three-dots::after {
+      display: none !important;
+    }
+    /* Przykładowe tło dla przycisku three dots */
+    .btn-three-dots {
+      background-color: #ff8c42;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
 </head>
 <body>
   <main class="container py-4">
     <header>
       <h2 class="mb-4">Przepisy</h2>
-      <!-- Przyciski akcji u góry -->
-      <div class="d-flex justify-content-end mb-3">
-        <!-- Przycisk otwierający modal dodawania przepisu -->
-        <button id="show-add-modal" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addRecipeModal">
-          Dodaj Przepis
-        </button>
-      </div>
     </header>
+
+    <!-- Przyciski akcji (np. dodawanie przepisu) -->
+    <section aria-label="Akcje" class="mb-4">
+      <button id="show-add-modal" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addRecipeModal">
+        Dodaj Przepis
+      </button>
+    </section>
+
+    <!-- Sekcja filtrów -->
+    <section aria-label="Filtry przepisów" class="mb-4">
+      <form id="filter-form" class="row g-2">
+        <div class="col-md-6">
+          <label for="filter-name" class="form-label">Nazwa przepisu</label>
+          <input type="text" id="filter-name" class="form-control" placeholder="Wpisz fragment nazwy">
+        </div>
+        <div class="col-md-6">
+          <label for="filter-tags" class="form-label">Tagi</label>
+          <!-- Placeholder – funkcja w budowie -->
+          <select id="filter-tags" class="form-control" disabled>
+            <option>Funkcja w budowie</option>
+          </select>
+        </div>
+        <div class="col-12 text-end mt-2">
+          <button type="button" id="search-button" class="btn btn-primary me-2">Szukaj</button>
+          <button type="button" id="clear-filters" class="btn btn-secondary">Wyczyść filtry</button>
+        </div>
+      </form>
+    </section>
 
     <!-- Lista przepisów -->
     <section aria-label="Lista przepisów">
       <ul id="recipe-list" class="list-unstyled">
-        <!-- Dynamiczne karty przepisów zostaną wstawione tutaj -->
+        <!-- Karty przepisów zostaną wstawione dynamicznie -->
       </ul>
     </section>
   </main>
 
-  <!-- Modal wyświetlający szczegóły/edycję przepisu -->
+  <!-- Modal do wyświetlania szczegółów lub edycji przepisu -->
   <div class="modal fade" id="recipeModal" tabindex="-1" aria-labelledby="recipeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -41,7 +78,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
         </div>
         <div class="modal-body" id="recipeModalBody">
-          <!-- Tutaj wstawiane są szczegóły lub formularz edycji -->
+          <!-- Dynamicznie wstawiane szczegóły lub formularz edycji -->
         </div>
       </div>
     </div>

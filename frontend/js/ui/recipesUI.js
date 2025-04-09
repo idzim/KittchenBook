@@ -9,7 +9,7 @@ function createRecipeCard(recipe) {
         <header class="card-header d-flex justify-content-between align-items-center">
           <h3 class="card-title mb-0">${recipe.name}</h3>
           <div class="dropdown">
-            <!-- Dodajemy klasę btn-three-dots, żeby ukryć domyślną strzałkę -->
+            <!-- Przycisk z ikoną trzech kropek -->
             <button class="btn btn-sm btn-secondary dropdown-toggle btn-three-dots" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bi bi-three-dots-vertical"></i>
             </button>
@@ -83,9 +83,7 @@ export function handleCreateRecipe() {
     createRecipe(recipeData)
       .then(() => {
         alert("Przepis dodany!");
-        // Czyszczenie formularza
         addRecipeForm.reset();
-        // Ukrycie modala po dodaniu przepisu
         const addModal = bootstrap.Modal.getInstance(document.getElementById("addRecipeModal"));
         addModal.hide();
         renderRecipeList();
@@ -172,7 +170,6 @@ function editRecipe(id) {
         updateRecipe(id, updatedData).then(() => {
           modal.hide();
           renderRecipeList();
-          // Komunikat potwierdzający edycję (dodany komunikat)
           alert("Przepis zaktualizowany!");
         }).catch((error) => {
           console.error("Błąd przy edycji:", error);
@@ -188,7 +185,23 @@ function generateShoppingList(id) {
   alert("Funkcja generowania listy zakupów jest w budowie.");
 }
 
-// Przypisanie funkcji do obiektu globalnego dla użytku w onclick
+// Funkcja do filtrowania przepisów – wyszukaj po fragmencie nazwy; filtr tagów w budowie
+export async function applyFilters() {
+  const filterName = document.getElementById("filter-name").value.trim().toLowerCase();
+  try {
+    let recipesData = await fetchRecipes();
+    if (filterName !== "") {
+      recipesData = recipesData.filter(recipe =>
+        recipe.name.toLowerCase().includes(filterName)
+      );
+    }
+    renderRecipeList(recipesData);
+  } catch (error) {
+    console.error("Błąd przy filtrowaniu:", error);
+  }
+}
+
+// Przypisanie funkcji globalnych do użytku w onclick
 window.deleteRecipeById = deleteRecipeById;
 window.editRecipe = editRecipe;
 window.showRecipeDetails = showRecipeDetails;

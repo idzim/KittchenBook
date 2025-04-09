@@ -76,6 +76,11 @@ footer {
     border-radius: 10px;
     text-align: center;
 }
+.section {
+    padding: 20px;
+    background-color: #fae1c2;
+    border-radius: 10px;
+}
 
 .day-list {
     display: flex;
@@ -171,6 +176,13 @@ footer {
     background-color: transparent;
     border: none;
     padding: 10px;
+  }
+  .card-title {
+    flex: 1;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
   }
   
   .card-footer button,
