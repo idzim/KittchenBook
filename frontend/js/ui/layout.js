@@ -17,6 +17,7 @@ export function renderLayout(pageTitle = "") {
                         <li class="nav-item"><a class="nav-link text-white" href="../../index.html">Strona Główna</a></li>
                         <li class="nav-item"><a class="nav-link text-white" href="../../pages/recipes.html">Przepisy</a></li>
                         <li class="nav-item"><a class="nav-link text-white" href="../../pages/mealplanner.html">Planer Posiłków</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="../../pages/shoppingLists.html">Listy Zakupów</a></li>
                         <li class="nav-item"><a class="nav-link text-white" href="../../pages/about.html">O nas</a></li>
                     </ul>
                 </div>
