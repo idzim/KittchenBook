@@ -245,3 +245,89 @@ footer {
 .navbar-toggler-icon {
     filter: brightness(0) invert(1); /* biała ikona hamburgera */
 }
+
+.btn-three-dots::after {
+    display: none !important;
+  }
+
+/* === Przycisk three dots === */
+.btn-three-dots {
+    background-color: #ff8c42; /* lub inny kolor pasujący do motywu */
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .btn-three-dots:hover {
+    background-color: #e07a30;
+  }
+  .btn-three-dots::after {
+    /* Ukrywamy domyślny pseudoelement dropdowna */
+    display: none !important;
+  }
+  
+  /* === Style dla okien modalnych === */
+  .modal-content {
+    border-radius: 10px;
+    border: 2px solid #ff8c42;
+    background-color: #fff5e1;
+    /* Możesz dodać delikatny cień */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+  .modal-header {
+    background-color: #ff8c42;
+    color: white;
+    border-bottom: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  .modal-title {
+    font-weight: bold;
+  }
+  .modal-body {
+    background-color: #fff5e1;
+    color: #333;
+    padding: 20px;
+  }
+  .modal-footer {
+    background-color: #ff8c42;
+    border-top: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  
+  /* === Style dla komunikatów (alertów) === */
+  .alert {
+    border: 1px solid transparent;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    font-size: 1rem;
+  }
+  
+  /* Alert sukcesu */
+  .alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+  }
+  
+  /* Alert błędu */
+  .alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+  }
+  
+  /* Dla przykładu, jeśli chcesz użyć niestandardowego komunikatu:
+  .alert-custom {
+     background-color: #ffeeba;
+     border-color: #ffeeba;
+     color: #856404;
+  } */
+  

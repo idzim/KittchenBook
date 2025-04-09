@@ -16,9 +16,8 @@ export async function fetchRecipes() {
       console.error("Błąd przy pobieraniu przepisów:", error);
       throw error;
     }
-  }
+}
   
-
 // Funkcja do tworzenia nowego przepisu
 export async function createRecipe(recipeData) {
     try {
@@ -78,29 +77,6 @@ export async function updateRecipe(id, updatedRecipeData) {
 
         const updatedRecipe = await response.json();
         return updatedRecipe;
-    } catch (error) {
-        console.error("Błąd API:", error);
-        throw error;
-    }
-}
-
-// Funkcja do filtrowania przepisów
-export async function filterRecipes(filters) {
-    try {
-        const response = await fetch(`${API_URL}/filter`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(filters),
-        });
-
-        if (!response.ok) {
-            throw new Error("Błąd przy filtrowaniu przepisów.");
-        }
-
-        const recipes = await response.json();
-        return recipes;
     } catch (error) {
         console.error("Błąd API:", error);
         throw error;
