@@ -89,9 +89,14 @@ http://localhost:3000/index.html
 
 ## 7. TO DO
 
-    * opisać front
-    * zacząć robić front
-    * opisać architekturę backendu entities-service-routes
-    * dodać Jest do testów backendu (lub coś innego)
-    * zacząć pisać testy jednostkowe
-    * napisać testy API (bruno? playwright? coś innego?)
+- opisać front
+- zacząć robić front
+- opisać architekturę backendu entities-service-routes
+- dodać Jest do testów backendu (lub coś innego)
+- zacząć pisać testy jednostkowe
+- napisać testy API (bruno? playwright? coś innego?)
+
+## Bugs/issue to solve
+
+- Przepisy > edytuj przepis/szczegóły przepisu: (modal-body)
+  Ostre krawędzie zamiast okrągłych - jakięs paddingi lub coś takiego do zrobienia

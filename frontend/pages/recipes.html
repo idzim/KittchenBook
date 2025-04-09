@@ -29,37 +29,45 @@
 </head>
 <body>
   <main class="container py-4">
-    <header>
+    <section aria-label="Nagłówek strony" class="mb-4">
       <h2 class="mb-4">Przepisy</h2>
-    </header>
-
     <!-- Przyciski akcji (np. dodawanie przepisu) -->
-    <section aria-label="Akcje" class="mb-4">
       <button id="show-add-modal" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addRecipeModal">
         Dodaj Przepis
       </button>
     </section>
 
-    <!-- Sekcja filtrów -->
-    <section aria-label="Filtry przepisów" class="mb-4">
-      <form id="filter-form" class="row g-2">
-        <div class="col-md-6">
-          <label for="filter-name" class="form-label">Nazwa przepisu</label>
-          <input type="text" id="filter-name" class="form-control" placeholder="Wpisz fragment nazwy">
-        </div>
-        <div class="col-md-6">
-          <label for="filter-tags" class="form-label">Tagi</label>
-          <!-- Placeholder – funkcja w budowie -->
-          <select id="filter-tags" class="form-control" disabled>
-            <option>Funkcja w budowie</option>
-          </select>
-        </div>
-        <div class="col-12 text-end mt-2">
-          <button type="button" id="search-button" class="btn btn-primary me-2">Szukaj</button>
-          <button type="button" id="clear-filters" class="btn btn-secondary">Wyczyść filtry</button>
-        </div>
-      </form>
-    </section>
+  <!-- Sekcja filtrów -->
+<section aria-label="Filtry przepisów" class="mb-4">
+  <form id="filter-form" class="row g-2">
+    <!-- Widoczny filtr -->
+    <div class="col-md-12">
+      <label for="filter-name" class="form-label">Nazwa</label>
+      <input type="text" id="filter-name" class="form-control" placeholder="Wpisz fragment nazwy">
+    </div>
+
+    <!-- Link do rozwinięcia dodatkowych filtrów -->  
+    <div class="col-12">
+      <a href="#" id="toggle-advanced-filters">Więcej filtrów</a>
+    </div>
+
+    <!-- Ukryte filtry (na starcie hidden) -->
+    <div id="advanced-filters" class="col-12 row g-2 mt-1 d-none">
+      <div class="col-md-6">
+        <!-- Placeholder – funkcja w budowie -->
+        <select id="filter-tags" class="form-control" disabled>
+          <option>Funkcja w budowie</option>
+        </select>
+      </div>
+      <!-- Można tu dodać kolejne zaawansowane filtry -->
+    </div>
+
+    <div class="col-12 text-end mt-2">
+      <button type="button" id="search-button" class="btn btn-primary me-2">Szukaj</button>
+      <button type="button" id="clear-filters" class="btn btn-secondary">Wyczyść filtry</button>
+    </div>
+  </form>
+</section>
 
     <!-- Lista przepisów -->
     <section aria-label="Lista przepisów">
