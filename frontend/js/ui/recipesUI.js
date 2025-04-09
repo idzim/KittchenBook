@@ -1,36 +1,61 @@
-import { fetchRecipes, createRecipe, updateRecipe, deleteRecipe, filterRecipes } from "../api/recipesAPI.js";
+// js/ui/recipesUI.js
+import { fetchRecipes, createRecipe, updateRecipe, deleteRecipe } from "../api/recipesAPI.js";
 
-// Funkcja tworząca kartę przepisu jako element listy
+// Funkcja tworząca kartę przepisu jako element listy z dropdown menu opcji
 function createRecipeCard(recipe) {
   return `
     <li class="recipe-card mb-3">
       <article class="card">
-        <header class="card-header">
-          <h3 class="card-title">${recipe.name}</h3>
+        <header class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="card-title mb-0">${recipe.name}</h3>
+          <div class="dropdown">
+            <!-- Dodajemy klasę btn-three-dots, żeby ukryć domyślną strzałkę -->
+            <button class="btn btn-sm btn-secondary dropdown-toggle btn-three-dots" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-three-dots-vertical"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <button class="dropdown-item" onclick="showRecipeDetails(${recipe.id})">
+                  Szczegóły przepisu
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item" onclick="editRecipe(${recipe.id})">
+                  Edytuj przepis
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item text-danger" onclick="deleteRecipeById(${recipe.id})">
+                  Usuń przepis
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item" onclick="generateShoppingList(${recipe.id})" disabled>
+                  Generuj listę zakupów
+                </button>
+              </li>
+            </ul>
+          </div>
         </header>
         <div class="card-body">
           <p class="card-text">${recipe.description}</p>
         </div>
-        <footer class="card-footer text-end">
-          <a href="${recipe.link}" target="_blank" class="btn btn-sm btn-info">Szczegóły</a>
-          <button class="btn btn-sm btn-warning" onclick="editRecipe(${recipe.id})">Edytuj</button>
-          <button class="btn btn-sm btn-danger" onclick="deleteRecipeById(${recipe.id})">Usuń</button>
-        </footer>
       </article>
     </li>
   `;
 }
 
-// Funkcja do renderowania listy przepisów; opcjonalnie można przekazać listę (np. po filtrowaniu)
+// Funkcja do renderowania listy przepisów
 export async function renderRecipeList(recipesData) {
   const recipeListElement = document.getElementById("recipe-list");
 
   try {
-    // Jeśli nie przekazano listy, pobierz wszystkie przepisy
     if (!recipesData) {
+      console.log("Pobieranie przepisów z API...");
       recipesData = await fetchRecipes();
     }
-
+    console.log("Dane przepisów:", recipesData);
+    
     if (recipesData && recipesData.length > 0) {
       recipeListElement.innerHTML = recipesData.map(createRecipeCard).join("");
     } else {
@@ -42,23 +67,28 @@ export async function renderRecipeList(recipesData) {
   }
 }
 
-// Funkcja do obsługi formularza dodawania nowego przepisu
+// Obsługa formularza dodawania przepisu przez modal
 export function handleCreateRecipe() {
-  const recipeForm = document.getElementById("add-recipe-form");
-
-  recipeForm.addEventListener("submit", (event) => {
+  const addRecipeForm = document.getElementById("add-recipe-form");
+  
+  addRecipeForm.addEventListener("submit", (event) => {
     event.preventDefault();
-
+    
     const recipeData = {
-      name: document.getElementById("recipe-name").value,
-      description: document.getElementById("recipe-description").value,
-      link: document.getElementById("recipe-link").value,
+      name: addRecipeForm.elements["recipe-name"].value,
+      description: addRecipeForm.elements["recipe-description"].value,
+      link: addRecipeForm.elements["recipe-link"].value,
     };
-
+    
     createRecipe(recipeData)
-      .then((newRecipe) => {
+      .then(() => {
         alert("Przepis dodany!");
-        renderRecipeList(); // Przeładuj listę przepisów po dodaniu
+        // Czyszczenie formularza
+        addRecipeForm.reset();
+        // Ukrycie modala po dodaniu przepisu
+        const addModal = bootstrap.Modal.getInstance(document.getElementById("addRecipeModal"));
+        addModal.hide();
+        renderRecipeList();
       })
       .catch((error) => {
         console.error("Błąd przy dodawaniu przepisu:", error);
@@ -67,33 +97,12 @@ export function handleCreateRecipe() {
   });
 }
 
-// Funkcja do filtrowania przepisów przy użyciu endpointu backendu
-export async function applyFilters() {
-  const name = document.getElementById("filter-name").value.trim();
-  const category = document.getElementById("filter-category").value.trim();
-  const ingredientsStr = document.getElementById("filter-ingredients").value.trim();
-  let ingredients = [];
-  if (ingredientsStr) {
-    ingredients = ingredientsStr.split(",").map(item => item.trim()).filter(item => item !== "");
-  }
-  
-  const filters = { name, category, ingredients };
-
-  try {
-    const filteredRecipes = await filterRecipes(filters);
-    renderRecipeList(filteredRecipes);
-  } catch (error) {
-    console.error("Błąd podczas filtrowania:", error);
-    alert("Wystąpił błąd podczas filtrowania przepisów.");
-  }
-}
-
 // Funkcja do usuwania przepisu
 function deleteRecipeById(id) {
   deleteRecipe(id)
     .then((result) => {
       alert(result.message);
-      renderRecipeList(); // Przeładuj listę przepisów po usunięciu
+      renderRecipeList();
     })
     .catch((error) => {
       console.error("Błąd przy usuwaniu przepisu:", error);
@@ -101,11 +110,86 @@ function deleteRecipeById(id) {
     });
 }
 
-// Funkcja do edytowania przepisu (przykład)
-function editRecipe(id) {
-  alert(`Edytujesz przepis o ID: ${id}`);
+// Funkcja wyświetlająca szczegóły przepisu w modalu
+function showRecipeDetails(id) {
+  fetchRecipes().then(recipes => {
+    const recipe = recipes.find(r => r.id === id);
+    if (recipe) {
+      const modalTitle = document.getElementById("recipeModalLabel");
+      const modalBody = document.getElementById("recipeModalBody");
+
+      modalTitle.textContent = `Szczegóły: ${recipe.name}`;
+      modalBody.innerHTML = `
+        <p><strong>Nazwa:</strong> ${recipe.name}</p>
+        <p><strong>Opis:</strong> ${recipe.description}</p>
+        <p><strong>Link:</strong> <a href="${recipe.link}" target="_blank">${recipe.link}</a></p>
+      `;
+
+      const modal = new bootstrap.Modal(document.getElementById("recipeModal"));
+      modal.show();
+    }
+  });
 }
 
-// Przypisanie funkcji do obiektu globalnego, aby mogły być wywoływane z atrybutu onclick
+// Funkcja edytowania przepisu z wykorzystaniem modala
+function editRecipe(id) {
+  fetchRecipes().then(recipes => {
+    const recipe = recipes.find(r => r.id === id);
+    if (recipe) {
+      const modalTitle = document.getElementById("recipeModalLabel");
+      const modalBody = document.getElementById("recipeModalBody");
+
+      modalTitle.textContent = `Edytuj: ${recipe.name}`;
+      modalBody.innerHTML = `
+        <form id="edit-recipe-form">
+          <div class="mb-3">
+            <label class="form-label">Nazwa</label>
+            <input class="form-control" name="recipe-name" value="${recipe.name}" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Opis</label>
+            <textarea class="form-control" name="recipe-description" required>${recipe.description}</textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Link</label>
+            <input class="form-control" name="recipe-link" value="${recipe.link}" required />
+          </div>
+          <button type="submit" class="btn btn-primary">Zapisz</button>
+        </form>
+      `;
+
+      const modal = new bootstrap.Modal(document.getElementById("recipeModal"));
+      modal.show();
+
+      document.getElementById("edit-recipe-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const updatedData = {
+          name: e.target["recipe-name"].value,
+          description: e.target["recipe-description"].value,
+          link: e.target["recipe-link"].value,
+        };
+
+        updateRecipe(id, updatedData).then(() => {
+          modal.hide();
+          renderRecipeList();
+          // Komunikat potwierdzający edycję (dodany komunikat)
+          alert("Przepis zaktualizowany!");
+        }).catch((error) => {
+          console.error("Błąd przy edycji:", error);
+          alert("Nie udało się zaktualizować przepisu.");
+        });
+      });
+    }
+  });
+}
+
+// Placeholder dla generowania listy zakupów
+function generateShoppingList(id) {
+  alert("Funkcja generowania listy zakupów jest w budowie.");
+}
+
+// Przypisanie funkcji do obiektu globalnego dla użytku w onclick
 window.deleteRecipeById = deleteRecipeById;
 window.editRecipe = editRecipe;
+window.showRecipeDetails = showRecipeDetails;
+window.generateShoppingList = generateShoppingList;

@@ -6,7 +6,10 @@
   <title>Przepisy | KitchenBook</title>
   <link rel="stylesheet" href="../css/reset.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link rel="stylesheet" href="../css/styles.css">
+  <!-- Dodajemy styl, aby ukryć strzałkę dropdowna dla przycisku three dots -->
 </head>
 <body>
   <main class="container py-4">
@@ -14,62 +17,67 @@
       <h2 class="mb-4">Przepisy</h2>
       <!-- Przyciski akcji u góry -->
       <div class="d-flex justify-content-end mb-3">
-        <button id="show-form" class="btn btn-success">Dodaj Przepis</button>
+        <!-- Przycisk otwierający modal dodawania przepisu -->
+        <button id="show-add-modal" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addRecipeModal">
+          Dodaj Przepis
+        </button>
       </div>
     </header>
 
-    <!-- Ukryty formularz do dodania nowego przepisu -->
-    <section id="recipe-form-section" class="mb-4" style="display: none;">
-      <h3>Dodaj nowy przepis</h3>
-      <form id="add-recipe-form">
-        <div class="mb-3">
-          <label for="recipe-name" class="form-label">Nazwa przepisu</label>
-          <input type="text" class="form-control" id="recipe-name" required>
-        </div>
-        <div class="mb-3">
-          <label for="recipe-description" class="form-label">Opis przepisu</label>
-          <textarea class="form-control" id="recipe-description" required></textarea>
-        </div>
-        <div class="mb-3">
-          <label for="recipe-link" class="form-label">Link do przepisu</label>
-          <input type="url" class="form-control" id="recipe-link" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Zapisz przepis</button>
-      </form>
-    </section>
-
-    <!-- Belka filtrów -->
-    <section aria-label="Filtry przepisów" class="mb-4">
-      <form id="filter-form">
-        <fieldset class="row g-2">
-          <legend class="visually-hidden">Filtry</legend>
-          <div class="col-md-4">
-            <label for="filter-name" class="form-label">Nazwa przepisu</label>
-            <input type="text" id="filter-name" class="form-control" placeholder="Nazwa przepisu">
-          </div>
-          <div class="col-md-4">
-            <label for="filter-category" class="form-label">Kategoria</label>
-            <input type="text" id="filter-category" class="form-control" placeholder="Kategoria">
-          </div>
-          <div class="col-md-4">
-            <label for="filter-ingredients" class="form-label">Składniki</label>
-            <input type="text" id="filter-ingredients" class="form-control" placeholder="Składniki (oddzielone przecinkami)">
-          </div>
-        </fieldset>
-        <div class="mt-2 text-end">
-          <button type="button" id="search-button" class="btn btn-primary">Szukaj</button>
-        </div>
-      </form>
-    </section>
-
-    <!-- Lista przepisów (jako jednokolumnowa lista kart) -->
+    <!-- Lista przepisów -->
     <section aria-label="Lista przepisów">
       <ul id="recipe-list" class="list-unstyled">
-        <!-- Dynamiczne elementy listy zostaną wstawione tutaj -->
+        <!-- Dynamiczne karty przepisów zostaną wstawione tutaj -->
       </ul>
     </section>
   </main>
 
+  <!-- Modal wyświetlający szczegóły/edycję przepisu -->
+  <div class="modal fade" id="recipeModal" tabindex="-1" aria-labelledby="recipeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="recipeModalLabel">Szczegóły przepisu</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+        </div>
+        <div class="modal-body" id="recipeModalBody">
+          <!-- Tutaj wstawiane są szczegóły lub formularz edycji -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal do dodawania nowego przepisu -->
+  <div class="modal fade" id="addRecipeModal" tabindex="-1" aria-labelledby="addRecipeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addRecipeModalLabel">Dodaj nowy przepis</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+        </div>
+        <div class="modal-body">
+          <form id="add-recipe-form">
+            <div class="mb-3">
+              <label for="recipe-name" class="form-label">Nazwa przepisu</label>
+              <input type="text" class="form-control" id="recipe-name" name="recipe-name" required>
+            </div>
+            <div class="mb-3">
+              <label for="recipe-description" class="form-label">Opis przepisu</label>
+              <textarea class="form-control" id="recipe-description" name="recipe-description" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="recipe-link" class="form-label">Link do przepisu</label>
+              <input type="url" class="form-control" id="recipe-link" name="recipe-link" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Zapisz przepis</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script type="module" src="../js/main.js" defer></script>
 </body>
 </html>
