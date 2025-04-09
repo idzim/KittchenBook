@@ -1,34 +1,17 @@
-import { renderLayout } from "./ui/layout.js";  // Importowanie z folderu 'ui'
-import { renderRecipeList, handleCreateRecipe } from "./ui/recipesUI.js";  // Importowanie funkcji renderujących
+// js/main.js
+import { renderLayout } from "./ui/layout.js";
+import { initRecipesView } from "./views/recipesView.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Renderowanie layoutu na samym początku
-    renderLayout();
+  // Renderowanie globalnego layoutu (navbar, footer)
+  renderLayout();
 
-    // Renderowanie listy przepisów
-    try {
-        // Sprawdzamy, czy lista przepisów jest poprawnie renderowana
-        renderRecipeList();
-    } catch (error) {
-        console.error("Błąd przy renderowaniu listy przepisów:", error);
-        alert("Wystąpił błąd podczas ładowania przepisów.");
-    }
+  // Wykrywanie, która strona jest wyświetlana – przykładowo na podstawie URL
+  const path = window.location.pathname;
 
-    // Obsługa przycisku do pokazania formularza
-    const showFormButton = document.getElementById("show-form");
-    const recipeForm = document.getElementById("recipe-form-section");
-
-    showFormButton.addEventListener("click", () => {
-        recipeForm.style.display = recipeForm.style.display === "none" ? "block" : "none";
-    });
-
-    // Inicjalizacja formularza dodawania przepisu
-    try {
-        handleCreateRecipe();
-    } catch (error) {
-        console.error("Błąd przy obsłudze formularza:", error);
-        alert("Wystąpił błąd przy obsłudze formularza.");
-    }
-
-    // Możesz dodać inne funkcje po tym, jak layout jest już gotowy
+  if (path.includes("recipes.html")) {
+    // Ładujemy widok przepisów
+    initRecipesView();
+  }
+  // Możesz tutaj dodać kolejne warunki dla innych widoków, np. mealplanner.html, about.html itp.
 });

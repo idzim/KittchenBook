@@ -4,6 +4,31 @@
 
 Kittchen Book to aplikacja webowa umożliwiająca użytkownikom zarządzanie domowymi przepisami kulinarnymi. Dzięki niej można dodawać, edytować, usuwać oraz organizować przepisy według kategorii, składników i preferencji kulinarnych. Aplikacja zapewnia wygodne przechowywanie oraz łatwy dostęp do ulubionych receptur.
 
+### 1.1.1 Strutktura frontendu:
+
+/frontend
+/assets
+logo.png
+/css
+reset.css
+styles.css
+/js
+/api <-- API warstwa – komunikacja z backendem (REST)
+recipesAPI.js
+mealsAPI.js
+/ui <-- Komponenty UI – obsługa interakcji, rendering
+layout.js
+recipesUI.js
+/views <-- Logika widoków – dla każdej strony
+recipesView.js
+plannerView.js
+main.js <-- Entry point (ładuje odpowiedni widok)
+/pages <-- strony html
+recipes.html
+index.html
+favicon.ico
+package.json
+
 ## 1.2 Opis sześciu funkcjonalności aplikacji w postaci User Stories
 
 ### 1.2.1 Dodawanie nowego przepisu
@@ -33,6 +58,7 @@ Jako użytkownik chcę mieć możliwość dynamicznego uzupełniania planu posi�
 Jako użytkownik chcę generować listę zakupów na podstawie wybranego przepisu/planu posiłków, aby ułatwić sobie zakupy.
 
 //Opcjonalne
+
 ### 1.2.7 Archiwum planów posiłków
 
 Jako użytkownik chcę mieć możliwość przeglądania archwiawalnych planów posiłków, chcę je sortować i wyświetlać w wybranej kombinacji.
