@@ -343,3 +343,57 @@ footer {
      color: #856404;
   } */
   
+  /* === Meal Planner Styles === */
+
+.mealplan-card {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    list-style: none;
+  }
+  
+  .mealplan-card .card {
+    background-color: #fff5e1;
+    border: 1px solid #ff8c42;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  
+  .mealplan-card .card-header {
+    background-color: #ff8c42;
+    color: white;
+    font-weight: bold;
+    padding: 12px 16px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+  
+  .mealplan-card .card-body {
+    padding: 16px;
+  }
+  
+  .mealplan-card .card-footer {
+    padding: 12px 16px;
+    background-color: #ffe8c4;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    text-align: center;
+  }
+  
+  .mealplan-card select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+  }
+  
+  .mealplan-card select:focus {
+    border-color: #ff8c42;
+    outline: none;
+  }
+
+  

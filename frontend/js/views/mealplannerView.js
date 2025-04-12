@@ -1,27 +1,24 @@
 // frontend/js/views/mealplannerView.js
 
-import { renderMealPlan } from "../ui/mealplannerUI.js";
-import * as mealplanAPI from "../api/mealplanAPI.js";
-import { fetchRecipes } from "../api/recipesAPI.js";
+import { initMealPlannerUI, updateMealPlanUI } from "../ui/mealplannerUI.js";
 
-let mealPlans = []; // Tablica planów pobranych z backendu
-let recipes = [];
+// Lokalna kopia danych (jeśli potrzebujemy ich późniejszej edycji lokalnie)
+let localMealPlans = [];
 
 /**
- * Dodaje przepis do wybranego planu posiłków.
- * @param {number} planIndex - indeks planu w tablicy mealPlans.
- * @param {HTMLSelectElement} selectElement - element select, z którego pobieramy wybrany przepis.
+ * Callback obsługujący dodanie przepisu do planu.
+ * Ta funkcja jest przekazywana do modułu UI i wywoływana przy zmianie elementu <select>.
+ * @param {number} planIndex - Indeks planu, do którego dodajemy przepis.
+ * @param {HTMLSelectElement} selectElement - Element <select> z wybranym przepisem.
  */
 async function addRecipe(planIndex, selectElement) {
   if (selectElement.value) {
     const selectedRecipe = JSON.parse(selectElement.value);
-    // Upewniamy się, że właściwość mealPlanRecipes istnieje
-    mealPlans[planIndex].mealPlanRecipes = mealPlans[planIndex].mealPlanRecipes || [];
-    mealPlans[planIndex].mealPlanRecipes.push(selectedRecipe);
+    localMealPlans[planIndex].mealPlanRecipes = localMealPlans[planIndex].mealPlanRecipes || [];
+    localMealPlans[planIndex].mealPlanRecipes.push(selectedRecipe);
     try {
-      // Aktualizujemy wybrany plan w bazie
-      await mealplanAPI.updateMealPlan(mealPlans[planIndex].id, mealPlans[planIndex]);
-      updateView();
+      // Aktualizujemy widok poprzez ponowne pobranie danych z API i renderowanie widoku
+      await updateMealPlanUI(addRecipe);
     } catch (error) {
       alert("Nie udało się zaktualizować planu.");
     }
@@ -29,62 +26,25 @@ async function addRecipe(planIndex, selectElement) {
 }
 
 /**
- * Renderuje widok na podstawie aktualnych danych.
- */
-function updateView() {
-  renderMealPlan(mealPlans, recipes, "day-list", addRecipe);
-}
-
-/**
- * Zapisuje zmiany dla wszystkich planów.
- */
-async function savePlan() {
-  try {
-    for (const plan of mealPlans) {
-      await mealplanAPI.updateMealPlan(plan.id, plan);
-    }
-    alert("Plan posiłków zapisany!");
-  } catch (error) {
-    alert("Błąd przy zapisie planu.");
-  }
-}
-
-/**
- * Resetuje wszystkie plany posiłków (czyści listy przepisów).
- */
-async function resetPlan() {
-  try {
-    for (const plan of mealPlans) {
-      plan.mealPlanRecipes = [];
-      await mealplanAPI.updateMealPlan(plan.id, plan);
-    }
-    updateView();
-  } catch (error) {
-    alert("Błąd przy resetowaniu planu.");
-  }
-}
-
-/**
- * Inicjalizuje widok planera posiłków:
- * 1. Pobiera dostępne przepisy.
- * 2. Pobiera listę planów posiłków z backendu.
- * 3. Podłącza zdarzenia dla przycisków.
- * 4. Renderuje widok.
+ * Inicjalizuje widok planera posiłków.
+ * Warstwa view wywołuje funkcję UI, która pobiera dane i renderuje widok.
+ * Dodatkowo podpinamy zdarzenia dla przycisków akcji (np. zapisu, resetu).
  */
 export async function initMealPlanner() {
   try {
-    // Pobieramy przepisy (np. z backendu)
-    recipes = await fetchRecipes();
+    // Inicjujemy UI, przekazując callback obsługujący dodanie przepisu
+    const data = await initMealPlannerUI(addRecipe);
+    localMealPlans = data.mealPlans;
 
-    // Pobieramy listę planów posiłków
-    mealPlans = await mealplanAPI.fetchMealPlans();
-
-    // Podpinamy zdarzenia dla przycisków zapisu i resetu
-    document.getElementById("btn-save").addEventListener("click", savePlan);
-    document.getElementById("btn-reset").addEventListener("click", resetPlan);
-
-    // Renderujemy widok
-    updateView();
+    // Podpięcie zdarzeń dla przycisków akcji – upewnij się, że elementy o id "btn-save" i "btn-reset" istnieją w HTML.
+    document.getElementById("btn-save").addEventListener("click", async () => {
+      alert("Akcja zapisu – implementację zapisu planów przez API należy umieścić w warstwie UI.");
+      // Możesz wywołać updateMealPlanUI(addRecipe) lub dodatkową logikę zapisu.
+    });
+    document.getElementById("btn-reset").addEventListener("click", async () => {
+      alert("Akcja resetu – implementację resetu planów należy umieścić w warstwie UI.");
+      // Dodaj logikę resetu i ponownego odświeżenia widoku, jeśli to konieczne.
+    });
   } catch (error) {
     console.error("Błąd inicjalizacji planera:", error);
     alert("Błąd inicjalizacji planera posiłków.");
