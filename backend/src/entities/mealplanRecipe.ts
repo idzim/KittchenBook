@@ -24,7 +24,7 @@ export class MealPlanRecipe {
   recipe: Recipe;
 
   @Column()
-  mealType: 'breakfast' | 'lunch' | 'dinner'; // Śniadanie, obiad, kolacja
+  mealType: string; // Śniadanie, obiad, kolacja
 
   @CreateDateColumn()
   createdAt: Date;

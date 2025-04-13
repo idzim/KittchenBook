@@ -395,5 +395,23 @@ footer {
     border-color: #ff8c42;
     outline: none;
   }
+/* === Style dla przycisku Dodaj Przepis (plus) w Meal Planner === */
+.btn-add-recipe {
+  display: block;               /* Element blokowy, aby rozciągnąć na całą szerokość */
+  width: 100%;                  /* Rozciągnięty na całą szerokość rodzica */
+  padding: 10px;                /* Padding wewnętrzny */
+  font-size: 1.5rem;            /* Duża czcionka, aby wyróżnić znak + */
+  color: #ff8c42;               /* Kolor tekstu – zgodny z motywem */
+  background-color: transparent;/* Przezroczyste tło, aby podkreślić ramkę */
+  border: 2px dashed #ff8c42;    /* Ramka przerywana, pasujący kolor */
+  border-radius: 12px;          /* Zaokrąglone rogi */
+  cursor: pointer;              /* Wskaźnik kursora po najechaniu */
+  transition: background-color 0.3s ease;
+}
+
+/* Opcjonalnie: delikatna zmiana tła przy najechaniu */
+.btn-add-recipe:hover {
+  background-color: #ffe8c4;
+}
 
   

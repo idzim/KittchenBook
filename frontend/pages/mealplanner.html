@@ -29,6 +29,47 @@
     </section>
   </main>
 
+  <!-- Modal do dodawania przepisu -->
+  <div class="modal fade" id="addRecipeModal" tabindex="-1" aria-labelledby="addRecipeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="add-recipe-form">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addRecipeModalLabel">Dodaj przepis do planu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Dropdown wyszukiwalny z przepisami -->
+            <div class="mb-3">
+              <label for="recipe-select" class="form-label">Wybierz przepis</label>
+              <select id="recipe-select" class="form-select">
+                <option value="">-- Wybierz przepis --</option>
+                <!-- Tutaj dynamicznie lub w trakcie inicjalizacji uzupełnisz listę przepisów -->
+              </select>
+            </div>
+            <!-- Dropdown wyszukiwalny z typami posiłków -->
+            <div class="mb-3">
+              <label for="mealtype-select" class="form-label">Wybierz typ posiłku</label>
+              <select id="mealtype-select" class="form-select">
+                <option value="">-- Wybierz typ --</option>
+                <!-- Przykładowe typy – możesz zastąpić lub uzupełnić danymi dynamicznymi -->
+                <option value="śniadanie">Śniadanie</option>
+                <option value="obiad">Obiad</option>
+                <option value="kolacja">Kolacja</option>
+                <option value="przekąska">Przekąska</option>
+              </select>
+            </div>
+            <!-- Opcjonalnie możesz dodać pola wyszukiwania/filtracji: np. input typu search -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+            <button type="submit" class="btn btn-primary">Dodaj</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- Bootstrap JavaScript -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script type="module" src="../js/main.js" defer></script>
