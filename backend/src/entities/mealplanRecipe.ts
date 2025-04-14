@@ -1,3 +1,4 @@
+//entities/mealplanRecipe.ts
 import {
   Entity,
   PrimaryGeneratedColumn,

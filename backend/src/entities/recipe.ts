@@ -1,3 +1,4 @@
+//entities/recipe.ts
 import {
   Entity,
   PrimaryGeneratedColumn,
