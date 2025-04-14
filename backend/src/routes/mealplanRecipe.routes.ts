@@ -44,7 +44,7 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-// Aktualizacja przypisania przepisu do planu posiłków
+// Aktualizacja przypisania przepisu do planu posiłków (pełna aktualizacja)
 router.put('/:id', async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id, 10);
@@ -58,6 +58,26 @@ router.put('/:id', async (req: Request, res: Response) => {
     res.json(updatedMealPlanRecipe);
   } catch (error) {
     res.status(500).json({ error: 'Błąd przy aktualizacji przypisanego przepisu' });
+  }
+});
+
+// Dodatkowy endpoint: zmiana przypisania do innego planu (drag and drop)
+router.put('/:id/move', async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    const { newMealPlan } = req.body;
+    // W tym przypadku przenosimy przypisanie tylko do innego MealPlan.
+    // Wywołujemy metodę updateMealPlanRecipe, przekazując nowy ID planu.
+    // Pozostałe pola (recipe, mealType) pozostają bez zmian.
+    const updatedMealPlanRecipe = await mealPlanRecipeService.updateMealPlanRecipe(
+      id,
+      newMealPlan, // nowy identyfikator planu
+      undefined, // przepis pozostaje ten sam
+      undefined, // typ posiłku pozostaje ten sam
+    );
+    res.json(updatedMealPlanRecipe);
+  } catch (error) {
+    res.status(500).json({ error: 'Błąd przy przenoszeniu przypisanego przepisu' });
   }
 });
 
