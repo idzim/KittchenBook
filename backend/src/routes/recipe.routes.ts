@@ -32,7 +32,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 // Tworzenie nowego przepisu
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const { name, description, link } = req.body;
+    const { name, description, link, category } = req.body;
     const savedRecipe = await recipeService.createRecipe(name, description, link);
     res.status(201).json(savedRecipe);
   } catch (error) {
@@ -44,8 +44,9 @@ router.post('/', async (req: Request, res: Response) => {
 router.put('/:id', async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id, 10);
-    const { name, description, link } = req.body;
-    const updatedRecipe = await recipeService.updateRecipe(id, name, description, link);
+    const { name, description, link, category, ingredients } = req.body;
+    const updatedRecipe = await recipeService.updateRecipe(id, name, description, link, category, ingredients);
+
     res.json(updatedRecipe);
   } catch (error) {
     res.status(500).json({ error: 'Błąd przy aktualizacji przepisu' });

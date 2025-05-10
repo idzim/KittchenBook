@@ -9,6 +9,12 @@ export class RecipeIngredient {
   @Column()
   name!: string; // Nazwa składnika
 
+  @Column({ nullable: true })
+  amount!: number; // Ilość składnika (opcjonalnie)
+
+  @Column({ nullable: true })
+  unit!: string; // Jednostka miary (opcjonalnie)
+
   @ManyToOne(() => Recipe, (recipe) => recipe.ingredients, { onDelete: 'CASCADE' })
   recipe!: Recipe;
 }

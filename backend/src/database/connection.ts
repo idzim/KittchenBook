@@ -6,7 +6,14 @@ import { MealPlan } from '../entities/mealplan';
 import { MealPlanRecipe } from '../entities/mealplanRecipe';
 import { ShoppingList } from '../entities/shoppingList';
 import { RecipeIngredient } from '../entities/recipeIngredient';
+import * as path from 'path';
 
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+console.log("ENV CHECK:", {
+  user: process.env.DB_USER,
+  pass: process.env.DB_PASSWORD,
+  db: process.env.DB_NAME,
+});
 dotenv.config();
 
 // Tworzymy instancję DataSource
@@ -21,13 +28,10 @@ export const AppDataSource = new DataSource({
   logging: true,
   entities: [User, Recipe, MealPlan, MealPlanRecipe, ShoppingList, RecipeIngredient],
   extra: {
-    trustServerCertificate: true,
     encrypt: false,
+    trustServerCertificate: true,
     enableArithAbort: true,
-  },
-  options: {
-    encrypt: false, // Jeśli łączysz się lokalnie
-  },
+  }
 });
 
 // Metoda do inicjalizacji połączenia z bazą
