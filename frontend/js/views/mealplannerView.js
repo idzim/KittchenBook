@@ -1,50 +1,103 @@
 // frontend/js/views/mealplannerView.js
 
-import { initMealPlannerUI, updateMealPlanUI } from "../ui/mealplannerUI.js";
+import { initMealPlannerUI, renderMealPlan } from "../ui/mealplannerUI.js";
+import { addMealPlanRecipe } from "../api/mealplanRecipeAPI.js";
 
-// Lokalna kopia danych (jeśli potrzebujemy ich późniejszej edycji lokalnie)
+// Globalna lokalna kopia danych
 let localMealPlans = [];
+let localRecipes = [];
 
 /**
  * Callback obsługujący dodanie przepisu do planu.
- * Ta funkcja jest przekazywana do modułu UI i wywoływana przy zmianie elementu <select>.
- * @param {number} planIndex - Indeks planu, do którego dodajemy przepis.
- * @param {HTMLSelectElement} selectElement - Element <select> z wybranym przepisem.
+ * @param {number} planIndex
+ * @param {HTMLSelectElement} selectElement
  */
 async function addRecipe(planIndex, selectElement) {
   if (selectElement.value) {
-    const selectedRecipe = JSON.parse(selectElement.value);
-    localMealPlans[planIndex].mealPlanRecipes = localMealPlans[planIndex].mealPlanRecipes || [];
-    localMealPlans[planIndex].mealPlanRecipes.push(selectedRecipe);
     try {
-      // Aktualizujemy widok poprzez ponowne pobranie danych z API i renderowanie widoku
-      await updateMealPlanUI(addRecipe);
+      const selectedRecipe = JSON.parse(selectElement.value);
+      const mealType = document.getElementById("mealtype-select").value;
+      if (!mealType) {
+        alert("Wybierz typ posiłku!");
+        return;
+      }
+
+      if (!localMealPlans[planIndex].mealPlanRecipes) {
+        localMealPlans[planIndex].mealPlanRecipes = [];
+      }
+
+      localMealPlans[planIndex].mealPlanRecipes.push({
+        recipe: selectedRecipe,
+        mealType: mealType,
+        isNew: true // oznaczenie lokalnych zmian do późniejszego zapisu
+      });
+
+      console.log("Dodaję przepis do planu o indeksie:", planIndex, selectedRecipe, mealType);
+
+      renderMealPlan(localMealPlans, localRecipes, "day-list");
     } catch (error) {
-      alert("Nie udało się zaktualizować planu.");
+      console.error("Błąd w addRecipe:", error);
+      alert("Nie udało się dodać przepisu lokalnie.");
     }
+  } else {
+    alert("Wybierz przepis, aby go dodać.");
   }
 }
 
 /**
  * Inicjalizuje widok planera posiłków.
- * Warstwa view wywołuje funkcję UI, która pobiera dane i renderuje widok.
- * Dodatkowo podpinamy zdarzenia dla przycisków akcji (np. zapisu, resetu).
  */
 export async function initMealPlanner() {
   try {
-    // Inicjujemy UI, przekazując callback obsługujący dodanie przepisu
     const data = await initMealPlannerUI(addRecipe);
     localMealPlans = data.mealPlans;
+    localRecipes = data.recipes;
 
-    // Podpięcie zdarzeń dla przycisków akcji – upewnij się, że elementy o id "btn-save" i "btn-reset" istnieją w HTML.
-    document.getElementById("btn-save").addEventListener("click", async () => {
-      alert("Akcja zapisu – implementację zapisu planów przez API należy umieścić w warstwie UI.");
-      // Możesz wywołać updateMealPlanUI(addRecipe) lub dodatkową logikę zapisu.
-    });
-    document.getElementById("btn-reset").addEventListener("click", async () => {
-      alert("Akcja resetu – implementację resetu planów należy umieścić w warstwie UI.");
-      // Dodaj logikę resetu i ponownego odświeżenia widoku, jeśli to konieczne.
-    });
+    console.log("Inicjalizacja planera, lokalne dane:", localMealPlans);
+
+    const saveButton = document.getElementById("btn-save");
+    if (saveButton) {
+      saveButton.addEventListener("click", async () => {
+        try {
+          for (const plan of localMealPlans) {
+            if (plan.mealPlanRecipes && plan.mealPlanRecipes.length > 0) {
+              const newRecipes = plan.mealPlanRecipes.filter(r => r.isNew);
+              for (const recipeEntry of newRecipes) {
+                await addMealPlanRecipe({
+                  recipeId: recipeEntry.recipe.id,
+                  mealPlanId: plan.id,
+                  mealType: recipeEntry.mealType
+                });
+                // Oznacz jako zapisane
+                recipeEntry.isNew = false;
+              }
+            }
+          }
+
+          alert("Zmiany zostały zapisane.");
+        } catch (error) {
+          console.error("Błąd podczas zapisywania zmian:", error);
+          alert("Nie udało się zapisać zmian.");
+        }
+      });
+    } else {
+      console.warn('Element z id "btn-save" nie został znaleziony.');
+    }
+
+    const resetButton = document.getElementById("btn-reset");
+    if (resetButton) {
+      resetButton.addEventListener("click", async () => {
+        try {
+          await initMealPlanner(); // Reset = ponowne pobranie z backendu
+          alert("Widok został zresetowany.");
+        } catch (error) {
+          console.error("Błąd podczas resetu:", error);
+          alert("Nie udało się zresetować widoku.");
+        }
+      });
+    } else {
+      console.warn('Element z id "btn-reset" nie został znaleziony.');
+    }
   } catch (error) {
     console.error("Błąd inicjalizacji planera:", error);
     alert("Błąd inicjalizacji planera posiłków.");

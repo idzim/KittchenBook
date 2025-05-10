@@ -8,7 +8,9 @@ export class MealPlanService {
 
   // Pobranie wszystkich planów posiłków
   async getAllMealPlans() {
-    return this.mealPlanRepo.find({ relations: ['user', 'mealPlanRecipes'] });
+    return this.mealPlanRepo.find({
+      relations: ['user', 'mealPlanRecipes', 'mealPlanRecipes.recipe'],
+    });
   }
 
   // Pobranie planu posiłków po ID

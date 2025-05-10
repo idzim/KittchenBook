@@ -1,4 +1,6 @@
+// /frontend/js/ui/mealplannerUI.js
 import * as mealplanAPI from "../api/mealplanAPI.js";
+import * as mealPlanRecipeAPI from "../api/mealplanRecipeAPI.js";
 import { fetchRecipes } from "../api/recipesAPI.js";
 
 /**
@@ -12,29 +14,25 @@ function getDzienTygodnia(dataString) {
 
 /**
  * Tworzy szablon karty planu posiłków.
- * Zamiast selecta wyświetlamy przycisk otwierający modal.
+ * Dla każdego przypisanego przepisu dodajemy atrybuty umożliwiające przeciąganie.
  */
 export function createMealPlanCard(plan, recipes, planIndex) {
+  // Każdy plan ma swój unikalny identyfikator przypisany jako data-plan-id
   return `
-    <li class="mealplan-card mb-3">
-      <article class="card">
+    <li class="mealplan-card mb-3" data-plan-id="${plan.id}">
+      <article class="card drop-zone">
         <header class="card-header d-flex justify-content-between align-items-center">
           <h3 class="card-title mb-0">${getDzienTygodnia(plan.date)}, ${plan.date}</h3>
           <div class="dropdown">
-            <!-- Przycisk z ikoną trzech kropek -->
             <button class="btn btn-sm btn-secondary dropdown-toggle btn-three-dots" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bi bi-three-dots-vertical"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
               <li>
-                <button class="dropdown-item" onclick="editMealPlan(${plan.id})">
-                  Edytuj plan
-                </button>
+                <button class="dropdown-item" onclick="editMealPlan(${plan.id})">Edytuj plan</button>
               </li>
               <li>
-                <button class="dropdown-item text-danger" onclick="deleteMealPlanById(${plan.id})">
-                  Usuń plan
-                </button>
+                <button class="dropdown-item text-danger" onclick="deleteMealPlanById(${plan.id})">Usuń plan</button>
               </li>
             </ul>
           </div>
@@ -43,10 +41,14 @@ export function createMealPlanCard(plan, recipes, planIndex) {
           ${
             plan.mealPlanRecipes && plan.mealPlanRecipes.length > 0
               ? plan.mealPlanRecipes
-                  .map(recipe => `
-                    <div class="meal-tile">
-                      <p class="meal-name">${recipe.name}</p>
-                      <a href="${recipe.link}" target="_blank" class="meal-recipe">Zobacz przepis</a>
+                  .map(mpr => `
+                    <div class="meal-tile draggable-recipe" 
+                         draggable="true" 
+                         data-mpr-id="${mpr.id}"
+                         data-current-plan-id="${plan.id}"
+                         ondragstart="handleDragStart(event)">
+                      <p class="meal-name">${mpr.recipe.name}</p>
+                      <a href="${mpr.recipe.link}" target="_blank" class="meal-recipe">Zobacz przepis</a>
                     </div>
                   `)
                   .join("")
@@ -54,7 +56,6 @@ export function createMealPlanCard(plan, recipes, planIndex) {
           }
         </section>
         <footer class="card-footer text-center">
-          <!-- Przycisk z plusem, otwierający modal -->
           <button 
             class="btn-add-recipe" 
             data-plan-id="${plan.id}" 
@@ -83,7 +84,6 @@ export function renderMealPlan(mealPlans, recipes, containerId) {
     return;
   }
 
-  // Używamy elementu <ul> jako listy planów
   const ulElement = document.createElement("ul");
   ulElement.classList.add("list-unstyled");
 
@@ -92,7 +92,8 @@ export function renderMealPlan(mealPlans, recipes, containerId) {
   });
   container.appendChild(ulElement);
 
-  // Usunięto podpinanie zdarzeń dla <select>, ponieważ teraz korzystamy z przycisków
+  // Podpięcie obsługi drag and drop na wygenerowanych elementach
+  bindDragAndDropEvents();
 }
 
 /**
@@ -103,14 +104,10 @@ export function renderMealPlan(mealPlans, recipes, containerId) {
  */
 export async function initMealPlannerUI() {
   try {
-    // Pobierz dane
     const recipes = await fetchRecipes();
     const mealPlans = await mealplanAPI.fetchMealPlans();
     
-    // Renderuj widok w "day-list"
     renderMealPlan(mealPlans, recipes, "day-list");
-    
-    // Przypinamy obsługę przycisków otwierających modal oraz wypełnianie listy przepisów
     bindModalHandlers(recipes, mealPlans);
     
     return { mealPlans, recipes };
@@ -121,67 +118,50 @@ export async function initMealPlannerUI() {
 }
 
 /**
- * Przypina eventy dla przycisków otwierających modal oraz obsługuje formularz modala.
- * @param {Array} recipes - Lista dostępnych przepisów.
- * @param {Array} mealPlans - Lista planów, potrzebna do ustalenia, do którego planu dodajemy przepis.
+ * Przypina eventy dla przycisków otwierających modal oraz formularza.
  */
 function bindModalHandlers(recipes, mealPlans) {
-  // Event dla przycisków "+"
   document.querySelectorAll(".btn-add-recipe").forEach(btn => {
     btn.addEventListener("click", () => {
-      // Ustawia aktualny plan, z którego wywołaliśmy modal
       const currentPlanId = btn.getAttribute("data-plan-id");
-      btn.setAttribute("data-current-plan-id", currentPlanId); // ewentualne dodatkowe przechowanie
+      btn.setAttribute("data-current-plan-id", currentPlanId);
       populateRecipesDropdown(recipes);
-      // Opcjonalnie: możesz ustawić też jakieś dane pomocnicze w modalu, np. hidden input z id planu.
     });
   });
 
-  // Obsługa formularza w modalu
   const form = document.getElementById("add-recipe-form");
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    
+  
     const recipeSelect = document.getElementById("recipe-select");
     const mealtypeSelect = document.getElementById("mealtype-select");
-    
+  
     const selectedRecipeValue = recipeSelect.value;
     const selectedMealType = mealtypeSelect.value;
-    
+  
     if (!selectedRecipeValue || !selectedMealType) {
       alert("Wybierz przepis i typ posiłku!");
       return;
     }
-    
+  
     const selectedRecipe = JSON.parse(selectedRecipeValue);
-    
-    // Pobieramy ID planu – zakładamy, że jest ustawione jako atrybut w przycisku
     const currentPlanId = document.querySelector(".btn-add-recipe[data-bs-target='#addRecipeModal']").getAttribute("data-plan-id");
-    const planIndex = mealPlans.findIndex(plan => plan.id == currentPlanId);
-    if (planIndex === -1) {
-      alert("Nie znaleziono wybranego planu!");
-      return;
-    }
-    
-    // Dodajemy nowy przepis do lokalnego modelu
-    mealPlans[planIndex].mealPlanRecipes = mealPlans[planIndex].mealPlanRecipes || [];
-    mealPlans[planIndex].mealPlanRecipes.push({ ...selectedRecipe, mealType: selectedMealType });
-    
-    // Aktualizujemy plan przy użyciu API
+  
     try {
-      const updatedPlan = await mealplanAPI.updateMealPlan(currentPlanId, mealPlans[planIndex]);
-      mealPlans[planIndex] = updatedPlan;
-      // Odświeżenie widoku (całkowite ponowne pobranie i rendering)
-      await initMealPlannerUI();
+      // rzeczywisty zapis do backendu
+      await mealPlanRecipeAPI.addMealPlanRecipe({
+        recipeId: selectedRecipe.id,
+        mealPlanId: parseInt(currentPlanId),
+        mealType: selectedMealType
+      });
+  
+      await initMealPlannerUI(); // odśwież widok
     } catch (error) {
-      console.error("Błąd przy aktualizacji planu:", error);
-      alert("Nie udało się zaktualizować planu.");
+      console.error("Błąd przy dodawaniu przepisu:", error);
+      alert("Nie udało się dodać przepisu.");
     }
-    
-    // Reset formularza
+  
     form.reset();
-    
-    // Zamknięcie modala (Bootstrap)
     const modalEl = document.getElementById("addRecipeModal");
     const modalInstance = bootstrap.Modal.getInstance(modalEl);
     modalInstance.hide();
@@ -190,13 +170,61 @@ function bindModalHandlers(recipes, mealPlans) {
 
 /**
  * Wypełnia dropdown w modalu listą przepisów.
- * @param {Array} recipes - Lista dostępnych przepisów.
  */
 function populateRecipesDropdown(recipes) {
   const recipeSelect = document.getElementById("recipe-select");
   recipeSelect.innerHTML = "<option value=''>-- Wybierz przepis --</option>";
   recipes.forEach(recipe => {
     recipeSelect.innerHTML += `<option value='${JSON.stringify(recipe)}'>${recipe.name}</option>`;
+  });
+}
+
+/**
+ * Obsługa zdarzenia dragstart – przypisuje ID przenoszonego elementu.
+ */
+window.handleDragStart = function(event) {
+  // Przechowujemy identyfikator przypisanego przepisu (MealPlanRecipe)
+  event.dataTransfer.setData("text/plain", event.target.getAttribute("data-mpr-id"));
+};
+
+/**
+ * Podpięcie obsługi zdarzeń dragover i drop do wszystkich drop-zone (karty planu).
+ */
+function bindDragAndDropEvents() {
+  const dropZones = document.querySelectorAll(".drop-zone");
+  dropZones.forEach(zone => {
+    // Umożliwiamy drop
+    zone.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      zone.classList.add("dragover");
+    });
+    
+    zone.addEventListener("dragleave", () => {
+      zone.classList.remove("dragover");
+    });
+    
+    zone.addEventListener("drop", async (event) => {
+      event.preventDefault();
+      zone.classList.remove("dragover");
+      
+      // Uzyskaj ID przeciąganego elementu (MealPlanRecipe)
+      const draggedMprId = event.dataTransfer.getData("text/plain");
+      if (!draggedMprId) return;
+      
+      // ID nowego planu pobieramy z atrybutu data-plan-id drop-zone (karty planu)
+      const newMealPlanId = zone.closest(".mealplan-card").getAttribute("data-plan-id");
+      if (!newMealPlanId) return;
+      
+      try {
+        // Wywołaj nowy endpoint do przeniesienia przypisania
+        await mealPlanRecipeAPI.moveMealPlanRecipe(parseInt(draggedMprId, 10), parseInt(newMealPlanId, 10));
+        // Po udanym przeniesieniu odśwież widok
+        await initMealPlannerUI();
+      } catch (error) {
+        console.error("Błąd przy przenoszeniu przepisu (drag and drop):", error);
+        alert("Nie udało się przenieść przepisu.");
+      }
+    });
   });
 }
 
