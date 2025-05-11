@@ -17,6 +17,12 @@
       <h2 class="mb-4">Przepisy</h2>
       <!-- Przyciski akcji u góry -->
       <div class="d-flex justify-content-end mb-3">
+        <div class="mb-3">
+          <label for="ingredient-search" class="form-label">Wyszukaj po składnikach</label>
+          <input type="text" class="form-control" id="ingredient-search" placeholder="np. jajko, mleko">
+          <button class="btn btn-primary mt-2" id="search-by-ingredients">Szukaj</button>
+          <button class="btn btn-outline-secondary" id="clear-search">Wyczyść</button>
+        </div>
         <!-- Przycisk otwierający modal dodawania przepisu -->
         <button id="show-add-modal" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addRecipeModal">
           Dodaj Przepis
@@ -62,9 +68,22 @@
               <input type="text" class="form-control" id="recipe-name" name="recipe-name" required>
             </div>
             <div class="mb-3">
+              <label for="recipe-category" class="form-label">Kategoria</label>
+              <select class="form-select" id="recipe-category" name="recipe-category" required>
+                <option value="">Wybierz kategorię</option>
+                <option value="śniadanie">Śniadanie</option>
+                <option value="obiad">Obiad</option>
+                <option value="kolacja">Kolacja</option>
+                <option value="deser">Deser</option>
+                <option value="inne">Inne</option>
+              </select>
+            </div>
+            <div class="mb-3">
               <label for="recipe-description" class="form-label">Opis przepisu</label>
               <textarea class="form-control" id="recipe-description" name="recipe-description" required></textarea>
             </div>
+            <div id="ingredients-list"></div>
+            <button type="button" class="btn btn-outline-secondary" onclick="addIngredient()">Dodaj składnik</button>
             <div class="mb-3">
               <label for="recipe-link" class="form-label">Link do przepisu</label>
               <input type="url" class="form-control" id="recipe-link" name="recipe-link" required>

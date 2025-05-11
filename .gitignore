@@ -7,7 +7,7 @@ dist/
 API Collection/
 
 # .env file containing sensitive credentials
-.env
+backend/.env
 
 # OS-specific files
 .DS_Store

@@ -41,12 +41,20 @@
             { day: "Niedziela", meals: [] }
         ];
 
-        const recipes = [
-            { name: "Naleśniki", link: "https://www.example.com/pancakes" },
-            { name: "Sałatka", link: "https://www.example.com/salad" },
-            { name: "Zupa", link: "https://www.example.com/soup" },
-            { name: "Makaron", link: "https://www.example.com/pasta" }
-        ];
+        let recipes = [];
+
+        async function loadRecipes() {
+            try {
+                const response = await fetch("/api/recipes");
+                if (!response.ok) throw new Error("Błąd pobierania przepisów");
+                recipes = await response.json();
+                renderDays(); // odpala tylko po pobraniu przepisów
+            } catch (err) {
+                console.error(err);
+                alert("Nie udało się pobrać przepisów");
+            }
+        }
+        loadRecipes();
 
         function renderDays() {
             const dayList = document.getElementById("day-list");
