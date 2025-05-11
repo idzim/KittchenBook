@@ -31,19 +31,19 @@ package.json
 
 ## 1.2 Opis sześciu funkcjonalności aplikacji w postaci User Stories
 
-### 1.2.1 Dodawanie nowego przepisu
+### 1.2.1 Dodawanie nowego przepisu ✅
 
 Jako użytkownik chcę móc dodać nowy przepis do mojej kolekcji, aby mieć go zawsze pod ręką.
 
-### 1.2.2 Edycja istniejącego przepisu
+### 1.2.2 Edycja istniejącego przepisu ✅
 
 Jako użytkownik chcę mieć możliwość edytowania moich przepisów, aby móc aktualizować ich treść i składniki.
 
-### 1.2.3 Organizacja przepisów według kategorii
+### 1.2.3 Organizacja przepisów według kategorii ✅
 
 Jako użytkownik chcę przypisywać przepisy do różnych kategorii (np. śniadanie, obiad, deser), aby łatwiej je odnajdywać.
 
-### 1.2.4 Wyszukiwanie przepisów po składnikach
+### 1.2.4 Wyszukiwanie przepisów po składnikach ✅
 
 Jako użytkownik chcę móc wyszukiwać przepisy na podstawie dostępnych składników, aby efektywnie planować posiłki.
 
