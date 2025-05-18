@@ -16,6 +16,7 @@
             <h2>Meal Planner</h2>
             <div class="btn-container">
                 <button class="btn btn-primary" onclick="savePlan()">Zapisz Plan</button>
+                <button class="btn btn-success" onclick="generateShoppingList()">Lista zakupów</button>
                 <button class="btn btn-outline-secondary" onclick="resetPlan()">Resetuj</button>
             </div>
         </div>
@@ -23,6 +24,25 @@
             <div class="day-list" id="day-list"></div>
         </div>
     </main>
+
+    <!-- Modal dla listy zakupów -->
+    <div class="modal fade" id="shoppingListModal" tabindex="-1" aria-labelledby="shoppingListModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="shoppingListModalLabel">Lista Zakupów</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+                </div>
+                <div class="modal-body">
+                    <pre id="shoppingListContent" class="form-control" style="min-height: 200px;"></pre>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+                    <button class="btn btn-primary" onclick="copyShoppingList()">Kopiuj do schowka</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
      <!-- Bootstrap JavaScript (MUST HAVE for hamburger menu to work) -->
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -80,6 +100,7 @@
                             <option value=''>+ Dodaj Przepis</option>
                             ${mealOptions}
                         </select>
+                        <button class="btn btn-sm btn-outline-primary mb-2" onclick="generateShoppingListForDay(${index})">Lista zakupów</button>
                     </div>
                 `;
                 dayList.appendChild(dayTile);
@@ -103,6 +124,70 @@
         function resetPlan() {
             localStorage.removeItem("mealPlan");
             location.reload();
+        }
+
+        function generateShoppingList() {
+            const allIngredients = {};
+
+            days.forEach(day => {
+                day.meals.forEach(meal => {
+                    meal.ingredients?.forEach(ingredient => {
+                        const key = `${ingredient.name} (${ingredient.unit || "-"})`;
+                        if (!allIngredients[key]) {
+                            allIngredients[key] = 0;
+                        }
+                        allIngredients[key] += ingredient.amount || 0;
+                    });
+                });
+            });
+
+            if (Object.keys(allIngredients).length === 0) {
+                alert("Brak składników do wyświetlenia.");
+                return;
+            }
+
+            const list = Object.entries(allIngredients)
+              .map(([key, amount]) => `${key}: ${amount}`)
+              .join('\n');
+
+            // Wyświetlenie w modalu
+            document.getElementById("shoppingListContent").textContent = list;
+            const modal = new bootstrap.Modal(document.getElementById("shoppingListModal"));
+            modal.show();
+        }
+
+        function generateShoppingListForDay(dayIndex) {
+            const day = days[dayIndex];
+            const allIngredients = {};
+
+            day.meals.forEach(meal => {
+                meal.ingredients?.forEach(ingredient => {
+                    const key = `${ingredient.name} (${ingredient.unit || "-"})`;
+                    if (!allIngredients[key]) {
+                        allIngredients[key] = 0;
+                    }
+                    allIngredients[key] += ingredient.amount || 0;
+                });
+            });
+
+            if (Object.keys(allIngredients).length === 0) {
+                alert("Brak składników do wyświetlenia.");
+                return;
+            }
+
+            const list = Object.entries(allIngredients)
+              .map(([key, amount]) => `${key}: ${amount}`)
+              .join('\n');
+
+            document.getElementById("shoppingListContent").textContent = `Zakupy dla: ${day.day}\n\n` + list;
+            const modal = new bootstrap.Modal(document.getElementById("shoppingListModal"));
+            modal.show();
+        }
+        function copyShoppingList() {
+            const content = document.getElementById("shoppingListContent").textContent;
+            navigator.clipboard.writeText(content)
+              .then(() => alert("Skopiowano do schowka!"))
+              .catch(() => alert("Nie udało się skopiować."));
         }
 
         renderDays();

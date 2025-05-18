@@ -14,11 +14,11 @@ export function renderLayout(pageTitle = "") {
                 </button>
                 <div class="collapse navbar-collapse" id="kittchenNavbar">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link text-white" href="../../index.html">Strona Główna</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="../../pages/recipes.html">Przepisy</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="../../pages/mealplanner.html">Planer Posiłków</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="../../pages/about.html">O nas</a></li>
-                    </ul>
+                      <li class="nav-item"><a class="nav-link text-white" href="/" data-link>Strona Główna</a></li>
+                      <li class="nav-item"><a class="nav-link text-white" href="/recipes" data-link>Przepisy</a></li>
+                      <li class="nav-item"><a class="nav-link text-white" href="/mealplanner" data-link>Planer Posiłków</a></li>
+                      <li class="nav-item"><a class="nav-link text-white" href="/about" data-link>O nas</a></li>
+                     </ul>
                 </div>
             </div>
         </nav>
