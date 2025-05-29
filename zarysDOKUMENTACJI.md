@@ -47,13 +47,11 @@ Jako użytkownik chcę przypisywać przepisy do różnych kategorii (np. śniada
 
 Jako użytkownik chcę móc wyszukiwać przepisy na podstawie dostępnych składników, aby efektywnie planować posiłki.
 
-### 1.2.5 Edycja planu posiłków
+### 1.2.5 Edycja planu posiłków ✅
 
 Jako użytkownik chcę mieć możliwość dynamicznego uzupełniania planu posiłków na wybrane dni.
 
-### 1.2.6 Lista zakupów na podstawie przepisów
-
-//tutaj to można zmienić jak będzie zbyt skomplikowane, albo irytujące
+### 1.2.6 Lista zakupów na podstawie przepisów ✅
 
 Jako użytkownik chcę generować listę zakupów na podstawie wybranego przepisu/planu posiłków, aby ułatwić sobie zakupy.
 
@@ -113,15 +111,15 @@ Funkcja listy zakupów pozwala szybciej planować posiłki i robić zakupy bardz
 
 ## 3.1. Przygotowanie bazowej konfiguracji aplikacji ❌
 
-## 3.2. Stworzenie frontendu dla sześciu określonych wymagań funkcjonalnych ❌
+## 3.2. Stworzenie frontendu dla sześciu określonych wymagań funkcjonalnych ✅
 
-## 3.3. Implementacja komunikacji z backendem dla minimum dwóch endpointów ❌
+## 3.3. Implementacja komunikacji z backendem dla minimum dwóch endpointów ✅
 
 ## 3.4. Implementacja routingu wraz z przejściami między podstronami ❌
 
-## 3.5. Użycie ciasteczek lub localstorage ❌
+## 3.5. Użycie ciasteczek lub localstorage ✅
 
-## 3.6. Responsywność conajmniej jednego ekranu dla conajmniej dwóch breakpointów ❌
+## 3.6. Responsywność conajmniej jednego ekranu dla conajmniej dwóch breakpointów ✅
 
 # Dodatkowe
 
