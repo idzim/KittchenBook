@@ -12,7 +12,7 @@ GO
 -- Tworzenie użytkownika
 IF NOT EXISTS (SELECT * FROM sys.syslogins WHERE name = 'cookbook_user')
 BEGIN
-    CREATE LOGIN cookbook_user WITH PASSWORD = 'Password123!';
+    CREATE LOGIN cookbook_user WITH PASSWORD = 'Passwordcd 123!';
     CREATE USER cookbook_user FOR LOGIN cookbook_user;
 END
 GO

@@ -1,17 +1,18 @@
 // js/main.js
 import { renderLayout } from "./ui/layout.js";
-import { initRecipesView } from "./views/recipesView.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Renderowanie globalnego layoutu (navbar, footer)
   renderLayout();
 
-  // Wykrywanie, która strona jest wyświetlana – przykładowo na podstawie URL
   const path = window.location.pathname;
 
-  if (path.includes("recipes.html")) {
-    // Ładujemy widok przepisów
-    initRecipesView();
+  // dynamiczny import – kod pobierany tylko gdy rzeczywiście jesteśmy na stronie przepisów
+  if (path.startsWith("/recipes") || path.endsWith("recipes.html")) {
+    import("./views/recipesView.js").then(({ initRecipesView }) => initRecipesView());
   }
-  // Możesz tutaj dodać kolejne warunki dla innych widoków, np. mealplanner.html, about.html itp.
+
+  if (path.startsWith("/mealplanner")) {
+    import("./views/mealPlannerView.js").then(({ initMealPlannerView }) => initMealPlannerView());
+  }
+
 });

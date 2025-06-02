@@ -13,20 +13,43 @@
 </head>
 <body>
   <main class="container py-4">
-    <header>
-      <h2 class="mb-4">Przepisy</h2>
-      <!-- Przyciski akcji u góry -->
-      <div class="d-flex justify-content-end mb-3">
-        <!-- Przycisk otwierający modal dodawania przepisu -->
-        <button id="show-add-modal" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addRecipeModal">
-          Dodaj Przepis
+    <header class="bg-primary text-white rounded-3 p-4 mb-4">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+        <h2 class="mb-0">Przepisy</h2>
+        <button id="show-add-modal" class="btn btn-light text-primary" data-bs-toggle="modal" data-bs-target="#addRecipeModal">
+          <i class="bi bi-plus-lg"></i> Dodaj przepis
         </button>
+      </div>
+
+      <div class="row g-2 align-items-end">
+        <!-- Pole wyszukiwania -->
+        <div class="col-12 col-sm-6 col-lg-4">
+          <label for="ingredient-search" class="form-label">Wyszukaj po składnikach</label>
+          <input type="text" class="form-control" id="ingredient-search" placeholder="np. jajko, mleko">
+        </div>
+
+        <!-- Przyciski Szukaj i Wyczyść -->
+        <div class="col-12 col-sm-6 col-lg-4 d-flex gap-2">
+          <button class="btn btn-light text-primary flex-fill" id="search-by-ingredients">
+            <i class="bi bi-search"></i> Szukaj
+          </button>
+          <button class="btn btn-outline-light flex-fill" id="clear-search">
+            <i class="bi bi-x-circle"></i> Wyczyść
+          </button>
+        </div>
+
+        <!-- Przycisk Seed -->
+        <div class="col-12 col-lg-4">
+          <button id="seed-btn" class="btn btn-warning w-100 text-white">
+            <i class="bi bi-download"></i> Dodaj przykładowe przepisy
+          </button>
+        </div>
       </div>
     </header>
 
     <!-- Lista przepisów -->
     <section aria-label="Lista przepisów">
-      <ul id="recipe-list" class="list-unstyled">
+      <ul id="recipe-list" class="row g-3 list-unstyled">
         <!-- Dynamiczne karty przepisów zostaną wstawione tutaj -->
       </ul>
     </section>
@@ -62,9 +85,22 @@
               <input type="text" class="form-control" id="recipe-name" name="recipe-name" required>
             </div>
             <div class="mb-3">
+              <label for="recipe-category" class="form-label">Kategoria</label>
+              <select class="form-select" id="recipe-category" name="recipe-category" required>
+                <option value="">Wybierz kategorię</option>
+                <option value="śniadanie">Śniadanie</option>
+                <option value="obiad">Obiad</option>
+                <option value="kolacja">Kolacja</option>
+                <option value="deser">Deser</option>
+                <option value="inne">Inne</option>
+              </select>
+            </div>
+            <div class="mb-3">
               <label for="recipe-description" class="form-label">Opis przepisu</label>
               <textarea class="form-control" id="recipe-description" name="recipe-description" required></textarea>
             </div>
+            <div id="ingredients-list"></div>
+            <button type="button" class="btn btn-outline-secondary" onclick="addIngredient()">Dodaj składnik</button>
             <div class="mb-3">
               <label for="recipe-link" class="form-label">Link do przepisu</label>
               <input type="url" class="form-control" id="recipe-link" name="recipe-link" required>
@@ -75,7 +111,23 @@
       </div>
     </div>
   </div>
-
+  <div class="modal fade" id="shoppingListModal" tabindex="-1" aria-labelledby="shoppingListModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="shoppingListModalLabel">Lista Zakupów</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+        </div>
+        <div class="modal-body">
+          <pre id="shoppingListContent" class="form-control" style="min-height: 200px;"></pre>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+          <button class="btn btn-primary" onclick="copyShoppingList()">Kopiuj do schowka</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Bootstrap JavaScript -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script type="module" src="../js/main.js" defer></script>
