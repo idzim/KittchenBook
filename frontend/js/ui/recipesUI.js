@@ -25,7 +25,7 @@ function createRecipeCard(recipe) {
       <button class="btn btn-sm btn-outline-danger flex-fill" onclick="deleteRecipeById(${recipe.id})">
         <i class="bi bi-trash"></i> Usuń
       </button>
-      <button class="btn btn-sm btn-outline-success flex-fill" onclick="generateShoppingList(${recipe.id})" disabled>
+      <button class="btn btn-sm btn-outline-success flex-fill" onclick="generateShoppingList(${recipe.id})">
         <i class="bi bi-cart"></i> Lista zakupów
       </button>
     </div>
@@ -259,9 +259,40 @@ function editRecipe(id) {
 }
 
 // Placeholder dla generowania listy zakupów
-function generateShoppingList(id) {
-  alert("Funkcja generowania listy zakupów jest w budowie.");
+async function generateShoppingList(id) {
+  try {
+    const res = await fetch(`/api/recipes/${id}`);
+    if (!res.ok) throw new Error("Nie udało się pobrać przepisu");
+    const recipe = await res.json();
+
+    const list = (recipe.ingredients || [])
+      .map(ing => `${ing.name} (${ing.unit || "-"}) – ${ing.amount ?? "-"}`)
+      .join("\n");
+
+    if (!list) {
+      alert("Brak składników do wyświetlenia.");
+      return;
+    }
+
+    document.getElementById("shoppingListContent").textContent =
+      `Zakupy dla: ${recipe.name}\n\n${list}`;
+
+    const modal = new bootstrap.Modal(
+      document.getElementById("shoppingListModal")
+    );
+    modal.show();
+  } catch (err) {
+    console.error(err);
+    alert("Nie udało się wygenerować listy zakupów.");
+  }
 }
+
+window.copyShoppingList = () => {
+  navigator.clipboard
+    .writeText(document.getElementById("shoppingListContent").textContent)
+    .then(() => alert("Skopiowano do schowka!"))
+    .catch(() => alert("Nie udało się skopiować."));
+};
 
 // Funkcja do dodawania składnika do listy zakupów
 function addIngredient(isEdit = false) {
