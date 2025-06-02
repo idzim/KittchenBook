@@ -32,8 +32,15 @@ router.get('/:id', async (req: Request, res: Response) => {
 // Tworzenie nowego przepisu
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const { name, description, link, category } = req.body;
-    const savedRecipe = await recipeService.createRecipe(name, description, link);
+    const { name, description, link, category, ingredients = [] } = req.body;
+    const savedRecipe = await recipeService.createRecipe(
+      name,
+      description,
+      link,
+      category,
+      ingredients
+    );
+
     res.status(201).json(savedRecipe);
   } catch (error) {
     res.status(500).json({ error: 'Błąd przy tworzeniu przepisu' });

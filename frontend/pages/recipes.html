@@ -13,26 +13,43 @@
 </head>
 <body>
   <main class="container py-4">
-    <header>
-      <h2 class="mb-4">Przepisy</h2>
-      <!-- Przyciski akcji u góry -->
-      <div class="d-flex justify-content-end mb-3">
-        <div class="mb-3">
+    <header class="bg-primary text-white rounded-3 p-4 mb-4">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+        <h2 class="mb-0">Przepisy</h2>
+        <button id="show-add-modal" class="btn btn-light text-primary" data-bs-toggle="modal" data-bs-target="#addRecipeModal">
+          <i class="bi bi-plus-lg"></i> Dodaj przepis
+        </button>
+      </div>
+
+      <div class="row g-2 align-items-end">
+        <!-- Pole wyszukiwania -->
+        <div class="col-12 col-sm-6 col-lg-4">
           <label for="ingredient-search" class="form-label">Wyszukaj po składnikach</label>
           <input type="text" class="form-control" id="ingredient-search" placeholder="np. jajko, mleko">
-          <button class="btn btn-primary mt-2" id="search-by-ingredients">Szukaj</button>
-          <button class="btn btn-outline-secondary" id="clear-search">Wyczyść</button>
         </div>
-        <!-- Przycisk otwierający modal dodawania przepisu -->
-        <button id="show-add-modal" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addRecipeModal">
-          Dodaj Przepis
-        </button>
+
+        <!-- Przyciski Szukaj i Wyczyść -->
+        <div class="col-12 col-sm-6 col-lg-4 d-flex gap-2">
+          <button class="btn btn-light text-primary flex-fill" id="search-by-ingredients">
+            <i class="bi bi-search"></i> Szukaj
+          </button>
+          <button class="btn btn-outline-light flex-fill" id="clear-search">
+            <i class="bi bi-x-circle"></i> Wyczyść
+          </button>
+        </div>
+
+        <!-- Przycisk Seed -->
+        <div class="col-12 col-lg-4">
+          <button id="seed-btn" class="btn btn-warning w-100 text-white">
+            <i class="bi bi-download"></i> Dodaj przykładowe przepisy
+          </button>
+        </div>
       </div>
     </header>
 
     <!-- Lista przepisów -->
     <section aria-label="Lista przepisów">
-      <ul id="recipe-list" class="list-unstyled">
+      <ul id="recipe-list" class="row g-3 list-unstyled">
         <!-- Dynamiczne karty przepisów zostaną wstawione tutaj -->
       </ul>
     </section>

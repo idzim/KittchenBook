@@ -20,9 +20,26 @@ export class RecipeService {
   }
 
   // Tworzenie nowego przepisu
-  async createRecipe(name: string, description: string, link: string, category?: string) {
-    const recipe = this.recipeRepo.create({ name, description, link, category });
-    return this.recipeRepo.save(recipe);
+  async createRecipe(
+    name: string,
+    description: string,
+    link: string,
+    category: string,
+    ingredients: { name: string; amount: number; unit: string }[],
+  ) {
+    const recipeRepo      = AppDataSource.getRepository(Recipe);
+    const ingredientRepo  = AppDataSource.getRepository(RecipeIngredient);
+
+    const recipe = recipeRepo.create({ name, description, link, category });
+    const savedRecipe = await recipeRepo.save(recipe);
+
+    if (ingredients?.length) {
+      const ingEntities = ingredients.map(i =>
+        ingredientRepo.create({ ...i, recipe: savedRecipe })
+      );
+      await ingredientRepo.save(ingEntities);
+    }
+    return { ...savedRecipe, ingredients };
   }
 
   // Aktualizacja przepisu

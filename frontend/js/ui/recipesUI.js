@@ -4,45 +4,35 @@ import { fetchRecipes, createRecipe, updateRecipe, deleteRecipe } from "../api/r
 // Funkcja tworząca kartę przepisu jako element listy z dropdown menu opcji
 function createRecipeCard(recipe) {
   return `
-    <li class="recipe-card mb-3">
-      <article class="card">
-        <header class="card-header d-flex justify-content-between align-items-center">
-          <h3 class="card-title mb-0">${recipe.name}</h3>
-          <span class="badge bg-info text-dark ms-2">${recipe.category || "brak kategorii"}</span>
-          <div class="dropdown">
-            <!-- Dodajemy klasę btn-three-dots, żeby ukryć domyślną strzałkę -->
-            <button class="btn btn-sm btn-secondary dropdown-toggle btn-three-dots" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-three-dots-vertical"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li>
-                <button class="dropdown-item" onclick="showRecipeDetails(${recipe.id})">
-                  Szczegóły przepisu
-                </button>
-              </li>
-              <li>
-                <button class="dropdown-item" onclick="editRecipe(${recipe.id})">
-                  Edytuj przepis
-                </button>
-              </li>
-              <li>
-                <button class="dropdown-item text-danger" onclick="deleteRecipeById(${recipe.id})">
-                  Usuń przepis
-                </button>
-              </li>
-              <li>
-                <button class="dropdown-item" onclick="generateShoppingList(${recipe.id})" disabled>
-                  Generuj listę zakupów
-                </button>
-              </li>
-            </ul>
-          </div>
-        </header>
-        <div class="card-body">
-          <p class="card-text">${recipe.description}</p>
-        </div>
-      </article>
-    </li>
+<li class="col-12 col-md-6 col-lg-4">
+  <article class="card shadow-sm h-100">
+    <header class="card-header bg-light">
+      <h5 class="card-title mb-1">${recipe.name}</h5>
+      <span class="badge bg-secondary">${recipe.category || "brak kategorii"}</span>
+    </header>
+
+    <div class="card-body">
+      <p class="card-text">${recipe.description || "Brak opisu przepisu."}</p>
+    </div>
+
+    <div class="card-footer d-flex flex-wrap gap-2">
+      <button class="btn btn-sm btn-outline-primary flex-fill" onclick="showRecipeDetails(${recipe.id})">
+        <i class="bi bi-eye"></i> Szczegóły
+      </button>
+      <button class="btn btn-sm btn-outline-secondary flex-fill" onclick="editRecipe(${recipe.id})">
+        <i class="bi bi-pencil"></i> Edytuj
+      </button>
+      <button class="btn btn-sm btn-outline-danger flex-fill" onclick="deleteRecipeById(${recipe.id})">
+        <i class="bi bi-trash"></i> Usuń
+      </button>
+      <button class="btn btn-sm btn-outline-success flex-fill" onclick="generateShoppingList(${recipe.id})" disabled>
+        <i class="bi bi-cart"></i> Lista zakupów
+      </button>
+    </div>
+  </article>
+</li>
+
+
   `;
 }
 
