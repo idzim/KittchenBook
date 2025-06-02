@@ -31,29 +31,27 @@ package.json
 
 ## 1.2 Opis sześciu funkcjonalności aplikacji w postaci User Stories
 
-### 1.2.1 Dodawanie nowego przepisu
+### 1.2.1 Dodawanie nowego przepisu ✅
 
 Jako użytkownik chcę móc dodać nowy przepis do mojej kolekcji, aby mieć go zawsze pod ręką.
 
-### 1.2.2 Edycja istniejącego przepisu
+### 1.2.2 Edycja istniejącego przepisu ✅
 
 Jako użytkownik chcę mieć możliwość edytowania moich przepisów, aby móc aktualizować ich treść i składniki.
 
-### 1.2.3 Organizacja przepisów według kategorii
+### 1.2.3 Organizacja przepisów według kategorii ✅
 
 Jako użytkownik chcę przypisywać przepisy do różnych kategorii (np. śniadanie, obiad, deser), aby łatwiej je odnajdywać.
 
-### 1.2.4 Wyszukiwanie przepisów po składnikach
+### 1.2.4 Wyszukiwanie przepisów po składnikach ✅
 
 Jako użytkownik chcę móc wyszukiwać przepisy na podstawie dostępnych składników, aby efektywnie planować posiłki.
 
-### 1.2.5 Edycja planu posiłków
+### 1.2.5 Edycja planu posiłków ✅
 
 Jako użytkownik chcę mieć możliwość dynamicznego uzupełniania planu posiłków na wybrane dni.
 
-### 1.2.6 Lista zakupów na podstawie przepisów
-
-//tutaj to można zmienić jak będzie zbyt skomplikowane, albo irytujące
+### 1.2.6 Lista zakupów na podstawie przepisów ✅
 
 Jako użytkownik chcę generować listę zakupów na podstawie wybranego przepisu/planu posiłków, aby ułatwić sobie zakupy.
 
@@ -113,15 +111,15 @@ Funkcja listy zakupów pozwala szybciej planować posiłki i robić zakupy bardz
 
 ## 3.1. Przygotowanie bazowej konfiguracji aplikacji ❌
 
-## 3.2. Stworzenie frontendu dla sześciu określonych wymagań funkcjonalnych ❌
+## 3.2. Stworzenie frontendu dla sześciu określonych wymagań funkcjonalnych ✅
 
-## 3.3. Implementacja komunikacji z backendem dla minimum dwóch endpointów ❌
+## 3.3. Implementacja komunikacji z backendem dla minimum dwóch endpointów ✅
 
 ## 3.4. Implementacja routingu wraz z przejściami między podstronami ❌
 
-## 3.5. Użycie ciasteczek lub localstorage ❌
+## 3.5. Użycie ciasteczek lub localstorage ✅
 
-## 3.6. Responsywność conajmniej jednego ekranu dla conajmniej dwóch breakpointów ❌
+## 3.6. Responsywność conajmniej jednego ekranu dla conajmniej dwóch breakpointów ✅
 
 # Dodatkowe
 
